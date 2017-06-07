@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_width="fill_parent"
+   android:layout_height="wrap_content"
+   android:padding="8dp">
+  <LinearLayout android:id="@+id/riga_cart"
+     android:orientation="vertical"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:paddingLeft="10dip"                
+     android:layout_gravity="left"                
+     android:layout_weight="0.9">
+    <TextView
+     android:id="@+id/nome_cart"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:textSize="16dip"
+     android:textStyle="italic"
+         />
+    <TextView
+     android:id="@+id/note_cart"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:textSize="14dip"
+     android:paddingLeft="10dip"
+         />
+  </LinearLayout>
+  <TextView
+   android:id="@+id/qta_cart"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:textSize="14dip"
+   android:layout_weight="0.1"
+   android:layout_gravity="right"
+         />
+</LinearLayout >
+

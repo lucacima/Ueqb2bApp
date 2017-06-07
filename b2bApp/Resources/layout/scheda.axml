@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#291e0a">
+
+  <include
+  android:id="@+id/toolbar"
+  layout="@layout/toolbar" />
+  
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+    android:id="@+id/parentContainer"
+    android:focusable="true"
+    android:focusableInTouchMode="true" 
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+      <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/schFoto"
+        />
+      <TextView
+          android:text="Codice"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/tvCodice"
+          android:layout_gravity="center_vertical" />
+      <TextView
+          android:text="Prezzo"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/tvPrezzo"
+          android:layout_gravity="center_vertical" />      
+      <TextView
+          android:text="Descrizione"
+          android:textAppearance="?android:attr/textAppearanceSmall"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/tvDescr"
+          android:layout_gravity="center_vertical" />
+      <TextView
+          android:text="Qta"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/tvQta"
+          android:layout_gravity="left" />
+      <EditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/etQta" 
+          android:layout_gravity="left"
+      />      
+      <TextView
+          android:text="Note"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/tvNote"
+          android:layout_gravity="center_vertical" />
+      <EditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:lines="3"
+          android:id="@+id/etNote" />
+      <Button
+          android:text="Aggiungi al carrello"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/btAggCarrello" />
+      <Button
+          android:text="Elimina"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:visibility="invisible"
+          android:background="#ffff0000"
+          android:id="@+id/btEliCarrello" />
+    </LinearLayout>
+  </ScrollView> 
+</LinearLayout>
