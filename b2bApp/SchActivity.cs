@@ -14,6 +14,7 @@ using System.Net;
 using Org.Json;
 using Android.Graphics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace b2bApp
 {
@@ -23,6 +24,7 @@ namespace b2bApp
         String id_sess = "";
         String idp = "";
         String nome = "";
+        String sizeImg = "";
         int riga_cart = 0;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -41,7 +43,7 @@ namespace b2bApp
             var metrics = Resources.DisplayMetrics;
             var widthInDp = metrics.WidthPixels;
             var heightInDp = metrics.HeightPixels;
-            String sizeImg = "";
+            
             if ( widthInDp>heightInDp)
             {
                 sizeImg = heightInDp.ToString();
@@ -81,10 +83,14 @@ namespace b2bApp
                     {
                         objCart.AggiornaCarrello(riga_cart, etQta.Text, etNote.Text);
                     }
+                    Intent intent = new Intent(this, typeof(CartActivity));
+                    intent.PutExtra("id_sess", id_sess);
+                    StartActivity(intent);
+
                     this.Finish();
                 } else
                 {
-                    Android.Widget.Toast.MakeText(this, "Specificare la quantità", Android.Widget.ToastLength.Short).Show();
+                    Toast.MakeText(this, "Specificare la quantità", Android.Widget.ToastLength.Short).Show();
                 }
             };
 
@@ -94,83 +100,63 @@ namespace b2bApp
                 {
                     objCart.EliminaCarrello(riga_cart);
                 }
+                Intent intent = new Intent(this, typeof(CartActivity));
+                intent.PutExtra("id_sess", id_sess);
+                StartActivity(intent);
+
                 this.Finish();
             };
 
 
 
-                LinearLayout parentContainer = FindViewById<LinearLayout>(Resource.Id.parentContainer);
+            LinearLayout parentContainer = FindViewById<LinearLayout>(Resource.Id.parentContainer);
             parentContainer.RequestFocus();
 
+            CaricaArticolo();
+        }
+
+        public async Task<int> CaricaArticolo()
+        {
+            Tuple<JSONObject, Bitmap> articolo = null;
+
+            ImageView ivfoto = FindViewById<ImageView>(Resource.Id.schFoto);
+            TextView tvCodice = FindViewById<TextView>(Resource.Id.tvCodice);
+            TextView tvPrezzo = FindViewById<TextView>(Resource.Id.tvPrezzo);
+            TextView tvDescr = FindViewById<TextView>(Resource.Id.tvDescr);
+
             ProgressDialog dialog = new ProgressDialog(this);
-//            dialog.SetMessage("Accesso in corso");
+            dialog.SetMessage("Apertura scheda....");
             dialog.SetCancelable(false);
             dialog.Show();
 
-            WebClient client = new WebClient();
-            client.DownloadStringAsync(new Uri("http://2.115.37.22/umbriaeq/rest/b2brest.php?op=schedart&session_id=" + id_sess + "&idp=" + idp + "&size=" + sizeImg));
-            client.DownloadStringCompleted += (object sender, DownloadStringCompletedEventArgs e2) =>
+            var res = await Task.Run(() =>
             {
-                //string reply_art = client.DownloadString("http://2.115.37.22/umbriaeq/rest/b2brest.php?op=schedart&session_id=" + id_sess + "&idp=" + idp + "&size=" + sizeImg);
-                string reply_art = e2.Result;
+                ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+                articolo = objArt.Articolo(id_sess, idp, sizeImg);
 
-                JSONObject jsobj = new JSONObject(reply_art);
-                string cod = jsobj.GetString("codice");
-                string descr = jsobj.GetString("descrizione");
-                if (cod == "0")
-                {
-                    JSONObject dati = jsobj.GetJSONObject("articolo");
-                    String codice = dati.GetString("codice");
-                    nome = dati.GetString("nome");
-                    String descrizione = dati.GetString("descrizione");
-                    String foto = dati.GetString("foto");
-                    String Prezzo = dati.GetString("prezzo_lordo");
-                    String Sconto = dati.GetString("sconto");
-                    String Disponibile = dati.GetString("disponibile");
+                return 0;
+            });
 
-                    foto = foto.Replace("../", "");
+            JSONObject dati = articolo.Item1;
 
-                    ActionBar.Title = nome;
-                    tvCodice.Text = "Codice: " + codice;
-                    tvPrezzo.Text = "Prezzo: " + Prezzo + " (Sc. " + Sconto + "%)";
-                    tvDescr.Text = descrizione;
+            String codice = dati.GetString("codice");
+            nome = dati.GetString("nome");
+            String descrizione = dati.GetString("descrizione");
+            String foto = dati.GetString("foto");
+            String Prezzo = dati.GetString("prezzo_lordo");
+            String Sconto = dati.GetString("sconto");
+            String Disponibile = dati.GetString("disponibile");
 
+            ActionBar.Title = nome;
+            tvCodice.Text = "Codice: " + codice;
+            tvPrezzo.Text = "Prezzo: " + Prezzo + " (Sc. " + Sconto + "%)";
+            tvDescr.Text = descrizione;
 
-                    //string path_file = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath; 
-                    string filename = System.IO.Path.Combine(Application.CacheDir.AbsolutePath, "b2bAppCacheF" + codice + "_" + sizeImg + ".jpg");
-                    Bitmap imageBitmap = null;
-                    if (File.Exists(filename))
-                    {
-                        var imageBytes = File.ReadAllBytes(filename);
-                        if (imageBytes != null && imageBytes.Length > 0)
-                        {
-                            imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                        }
-                        ivfoto.SetImageBitmap(imageBitmap);
-                    }
-                    try
-                    {
-                        client.DownloadDataAsync(new Uri("http://2.115.37.22/umbriaeq/" + foto));
-                        client.DownloadDataCompleted += (object sender2, DownloadDataCompletedEventArgs e) =>
-                        {
-                            var imageBytes = e.Result;
-                            if (imageBytes != null && imageBytes.Length > 0)
-                            {
-                                imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-                            }
-                            ivfoto.SetImageBitmap(imageBitmap);
+            ivfoto.SetImageBitmap(articolo.Item2);
 
-                            File.WriteAllBytes(filename, imageBytes);
-                        };
-                    }
-                    catch
-                    {
-                        // Imposto foto "No Image"
-                        imageBitmap = null;
-                    }
-                    dialog.Dismiss();
-                }
-            };
+            dialog.Dismiss();
+
+            return 0;
         }
     }
 }

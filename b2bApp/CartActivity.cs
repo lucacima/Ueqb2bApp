@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using Org.Json;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using System.IO;
-using Android.Content.PM;
 
 namespace b2bApp
 {
@@ -87,7 +80,6 @@ namespace b2bApp
 
             public override View GetView(int position, View convertView, ViewGroup parent)
             {
-                //var view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
                 var view = context.LayoutInflater.Inflate(Resource.Layout.riga_carrello, null);
                 var item = GetItem(position);
 

@@ -7,8 +7,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using System.IO;
 
 namespace b2bApp
@@ -65,8 +63,8 @@ namespace b2bApp
         {
 
             List<Tuple<string,string, string, string>> carts = RigheCarrello();
-            String idp = carts[riga].Item1;
-            String nome = carts[riga].Item2;
+            String idp = carts[riga-1].Item1;
+            String nome = carts[riga-1].Item2;
             carts[riga-1]= new Tuple<string,string, string, string>(idp,nome, Qta, Note);
 
             return ScriviCarrello(carts);

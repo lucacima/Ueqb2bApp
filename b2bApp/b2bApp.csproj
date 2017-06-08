@@ -55,6 +55,8 @@
   <ItemGroup>
     <Compile Include="CartActivity.cs" />
     <Compile Include="CartClass.cs" />
+    <Compile Include="ArticoliClass.cs" />
+    <Compile Include="RestCliClass.cs" />
     <Compile Include="SchActivity.cs" />
     <Compile Include="CatActivity.cs" />
     <Compile Include="MainActivity.cs" />
