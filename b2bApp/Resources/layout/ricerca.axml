@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/parentContainer"
+   android:orientation="vertical"
+   android:layout_width="fill_parent"
+   android:layout_height="fill_parent"
+   android:background="#291e0a" >
+
+  <include
+  android:id="@+id/toolbar"
+  layout="@layout/toolbar" />
+  
+  <ListView android:id="@+id/List"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+    />
+</LinearLayout>

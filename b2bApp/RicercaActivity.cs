@@ -12,92 +12,69 @@ using System.Threading.Tasks;
 
 namespace b2bApp
 {
-    [Activity(Label = "Categorie")]
-    public class CatActivity : Activity
+    [Activity(Label = "Risultato ricerca")]
+    public class RicercaActivity : Activity
     {
         String id_sess = "";
-        List<Tuple<string,string, int>> cats = new List<Tuple<string, string, int>>();
         List<Tuple<string,string, int>> items= new List<Tuple<string, string, int>>();
-        String path = "";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // loads the HomeScreen.axml as this activity's view
-
-            id_sess = Intent.Extras.GetString("id_sess");
-            String cat_padre = Intent.Extras.GetString("cat_padre");
-            path= Intent.Extras.GetString("path");
-
-            if ( cat_padre!="0")
-            {
-                SetContentView(Resource.Layout.ricerca);
-            } else
-            {
-                SetContentView(Resource.Layout.categorie);
-
-                EditText etCerca = FindViewById<EditText>(Resource.Id.etCerca);
-                Button btCerca = FindViewById<Button>(Resource.Id.btCerca);
-
-                btCerca.Click += (object sender, EventArgs e) =>
-                {
-                    if (etCerca.Text.Length == 0) return;
-
-                    Intent intent = new Intent(this, typeof(RicercaActivity));
-                    intent.PutExtra("id_sess", id_sess);
-                    intent.PutExtra("keyword", etCerca.Text);
-                    StartActivity(intent);
-                };
-            }
-
+            SetContentView(Resource.Layout.ricerca); // loads the HomeScreen.axml as this activity's view
             ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
             listView.ItemClick += OnListItemClick;  // to be defined
 
-            this.Title = path;
+            LinearLayout parentContainer = FindViewById<LinearLayout>(Resource.Id.parentContainer);
+
+            id_sess = Intent.Extras.GetString("id_sess");
+            String keyword = Intent.Extras.GetString("keyword");
+
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
-            ActionBar.Title = path;
+            ActionBar.Title = "Risultato ricerca";
 
-            ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-
-            // Categorie
-            cats = objArt.ElencoCategorie(cat_padre);
-
-            //Articoli
-            if (cats.Count == 0)
-            {
-
-                items = objArt.ElencoArticoli(cat_padre);
-                listView.Adapter = new ActivityListItem_Adapter(this, items);
-            } else
-            {
-                listView.Adapter = new ActivityListItem_Adapter(this, cats);
-            }
-
+            CercaArticoli(keyword);
         }
 
+        public async Task<int> CercaArticoli(String keyword)
+        {
+            ProgressDialog dialog = new ProgressDialog(this);
+            dialog.SetMessage("Ricerca in corso...");
+            dialog.SetCancelable(false);
+            dialog.Show();
+
+            try
+            {
+                ListView listView = FindViewById<ListView>(Resource.Id.List);
+
+                items.Clear();
+                ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+
+                var res = await Task.Run(() => {
+                    items = objArt.RicercaArticoli(id_sess, keyword);
+                    return true;
+                });
+
+                listView.Adapter = new ActivityListItem_Adapter(this, items);
+            } catch
+            {
+                ;
+            }
+
+            dialog.Dismiss();
+
+            return 0;
+        }
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            if (cats.Count > 0)
-            {
-                String cat_padre = cats[e.Position].Item1;
-                Intent intent = new Intent(this, typeof(CatActivity));
-                intent.PutExtra("id_sess", id_sess);
-                intent.PutExtra("cat_padre", cat_padre);
-                path += cats[e.Position].Item2 + "/";
-                intent.PutExtra("path", path);
-                StartActivity(intent);
-            }
-            else
-            {
-                String idp = items[e.Position].Item1;
-                Intent intent = new Intent(this, typeof(SchActivity));
-                intent.PutExtra("id_sess", id_sess);
-                intent.PutExtra("idp", idp);
-                StartActivity(intent);
-            }
+            String idp = items[e.Position].Item1;
+            Intent intent = new Intent(this, typeof(SchActivity));
+            intent.PutExtra("id_sess", id_sess);
+            intent.PutExtra("idp", idp);
+            StartActivity(intent);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

@@ -34,25 +34,33 @@ namespace b2bApp
                 dialog.Show();
 
                 var res= Task.Run(() => {
-                    clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
-                    String id_sess = objRestCli.Login(etUtente.Text, etPassword.Text);
-                    if (id_sess != "")
+                    try
                     {
-                        objRestCli.CatAll(id_sess);
-                        objRestCli.ArtAll(id_sess);
+                        clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
+                        String id_sess = objRestCli.Login(etUtente.Text, etPassword.Text);
+                        if (id_sess != "")
+                        {
+                            objRestCli.CatAll(id_sess);
+                            objRestCli.ArtAll(id_sess);
 
-                        Intent intent = new Intent(this, typeof(CatActivity));
-                        intent.PutExtra("id_sess", id_sess);
-                        intent.PutExtra("cat_padre", "0");
-                        intent.PutExtra("path", "/");
-                        StartActivity(intent);
-                     
-                        this.Finish();
-                    } else
+                            Intent intent = new Intent(this, typeof(CatActivity));
+                            intent.PutExtra("id_sess", id_sess);
+                            intent.PutExtra("cat_padre", "0");
+                            intent.PutExtra("path", "/");
+                            StartActivity(intent);
+
+                            this.Finish();
+                        }
+                        else
+                        {
+                            // Messaggio utente o password errati
+                            Toast.MakeText(this, "Utente o password non validi", Android.Widget.ToastLength.Short).Show();
+                        }
+                    } catch
                     {
-                        // Messaggio utente o password errati
-                        Toast.MakeText(this, "Utente o password non validi", Android.Widget.ToastLength.Short).Show();
+                        Toast.MakeText(this, "Errore in fase di autenticazione", Android.Widget.ToastLength.Short).Show();
                     }
+
                     dialog.Dismiss();
                 } );
             };

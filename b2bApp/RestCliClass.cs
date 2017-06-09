@@ -113,15 +113,21 @@ namespace b2bApp
 
         public bool ArtCat(String id_sess, String cat_padre)
         {
-            string reply_art = client.DownloadString(url + "?op=articoli/cat&session_id=" + id_sess + "&cat_id=" + cat_padre);
-            JSONObject jsobj_art = new JSONObject(reply_art);
-            string cod_art = jsobj_art.GetString("codice");
-            string descr_art = jsobj_art.GetString("descrizione");
-            if (cod_art == "0")
+            try
             {
-                JSONArray artArray = jsobj_art.GetJSONArray("articoli");
-                ArticoliClass objArt = new ArticoliClass(cacheDir);
-                objArt.ScriviArticoli(artArray);
+                string reply_art = client.DownloadString(url + "?op=articoli/cat&session_id=" + id_sess + "&cat_id=" + cat_padre);
+                JSONObject jsobj_art = new JSONObject(reply_art);
+                string cod_art = jsobj_art.GetString("codice");
+                string descr_art = jsobj_art.GetString("descrizione");
+                if (cod_art == "0")
+                {
+                    JSONArray artArray = jsobj_art.GetJSONArray("articoli");
+                    ArticoliClass objArt = new ArticoliClass(cacheDir);
+                    objArt.ScriviArticoli(artArray);
+                }
+            } catch
+            {
+                return false;
             }
 
             return true;
@@ -131,13 +137,20 @@ namespace b2bApp
         {
             JSONArray artArray = new JSONArray();
 
-            String reply_art = client.DownloadString(url + "?op=articoli/cat&session_id=" + id_sess + "&cat_id=0&keyword=" + keyword);
-            JSONObject jsobj_art = new JSONObject(reply_art);
-            string cod_art = jsobj_art.GetString("codice");
-            string descr_art = jsobj_art.GetString("descrizione");
-            if (cod_art == "0")
+            try
             {
-                artArray = jsobj_art.GetJSONArray("articoli");
+                String reply_art = client.DownloadString(url + "?op=articoli/cat&session_id=" + id_sess + "&cat_id=0&keyword=" + keyword);
+                JSONObject jsobj_art = new JSONObject(reply_art);
+                string cod_art = jsobj_art.GetString("codice");
+                string descr_art = jsobj_art.GetString("descrizione");
+                if (cod_art == "0")
+                {
+                    artArray = jsobj_art.GetJSONArray("articoli");
+                }
+
+            } catch
+            {
+                ;
             }
 
             return artArray;
@@ -147,13 +160,19 @@ namespace b2bApp
         {
             JSONObject dati = new JSONObject();
 
-            String reply_art = client.DownloadString(url + "?op=schedart&session_id=" + id_sess + "&idp=" + idp + "&size=" + sizeImg);
-            JSONObject jsobj = new JSONObject(reply_art);
-            string cod = jsobj.GetString("codice");
-            string descr = jsobj.GetString("descrizione");
-            if (cod == "0")
+            try
             {
-                dati = jsobj.GetJSONObject("articolo");
+                String reply_art = client.DownloadString(url + "?op=schedart&session_id=" + id_sess + "&idp=" + idp + "&size=" + sizeImg);
+                JSONObject jsobj = new JSONObject(reply_art);
+                string cod = jsobj.GetString("codice");
+                string descr = jsobj.GetString("descrizione");
+                if (cod == "0")
+                {
+                    dati = jsobj.GetJSONObject("articolo");
+                }
+            } catch
+            {
+                ;
             }
 
             return dati;

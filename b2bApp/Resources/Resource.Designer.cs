@@ -182,13 +182,16 @@ namespace b2bApp
 			public const int Main = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int riga_carrello = 2130903044;
+			public const int ricerca = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int scheda = 2130903045;
+			public const int riga_carrello = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int toolbar = 2130903046;
+			public const int scheda = 2130903046;
+			
+			// aapt resource value: 0x7f030007
+			public const int toolbar = 2130903047;
 			
 			static Layout()
 			{

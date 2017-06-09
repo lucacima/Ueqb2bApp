@@ -116,7 +116,7 @@ namespace b2bApp
         }
 
         public async Task<int> CaricaArticolo()
-        {
+        { 
             Tuple<JSONObject, Bitmap> articolo = null;
 
             ImageView ivfoto = FindViewById<ImageView>(Resource.Id.schFoto);
@@ -129,30 +129,39 @@ namespace b2bApp
             dialog.SetCancelable(false);
             dialog.Show();
 
-            var res = await Task.Run(() =>
+            try
             {
-                ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-                articolo = objArt.Articolo(id_sess, idp, sizeImg);
+                var res = await Task.Run(() =>
+                {
+                    ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+                    articolo = objArt.Articolo(id_sess, idp, sizeImg);
 
-                return 0;
-            });
+                    return 0;
+                });
 
-            JSONObject dati = articolo.Item1;
+                if ( articolo!=null)
+                {
+                    JSONObject dati = articolo.Item1;
 
-            String codice = dati.GetString("codice");
-            nome = dati.GetString("nome");
-            String descrizione = dati.GetString("descrizione");
-            String foto = dati.GetString("foto");
-            String Prezzo = dati.GetString("prezzo_lordo");
-            String Sconto = dati.GetString("sconto");
-            String Disponibile = dati.GetString("disponibile");
+                    String codice = dati.GetString("codice");
+                    nome = dati.GetString("nome");
+                    String descrizione = dati.GetString("descrizione");
+                    String foto = dati.GetString("foto");
+                    String Prezzo = dati.GetString("prezzo_lordo");
+                    String Sconto = dati.GetString("sconto");
+                    String Disponibile = dati.GetString("disponibile");
 
-            ActionBar.Title = nome;
-            tvCodice.Text = "Codice: " + codice;
-            tvPrezzo.Text = "Prezzo: " + Prezzo + " (Sc. " + Sconto + "%)";
-            tvDescr.Text = descrizione;
+                    ActionBar.Title = nome;
+                    tvCodice.Text = "Codice: " + codice;
+                    tvPrezzo.Text = "Prezzo: " + Prezzo + " (Sc. " + Sconto + "%)";
+                    tvDescr.Text = descrizione;
 
-            ivfoto.SetImageBitmap(articolo.Item2);
+                    ivfoto.SetImageBitmap(articolo.Item2);
+                }
+            } catch
+            {
+                ;
+            }
 
             dialog.Dismiss();
 
