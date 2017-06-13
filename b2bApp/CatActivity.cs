@@ -67,9 +67,7 @@ namespace b2bApp
             //Articoli
             if (cats.Count == 0)
             {
-
-                items = objArt.ElencoArticoli(cat_padre);
-                listView.Adapter = new ActivityListItem_Adapter(this, items);
+                CercaArticoli(cat_padre);
             } else
             {
                 listView.Adapter = new ActivityListItem_Adapter(this, cats);
@@ -77,6 +75,25 @@ namespace b2bApp
 
         }
 
+        public async Task<int> CercaArticoli(String cat_padre)
+        {
+            ProgressDialog dialog = new ProgressDialog(this);
+            dialog.SetMessage("Ricerca in corso...");
+            dialog.SetCancelable(false);
+            dialog.Show();
+
+            ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+            ListView listView = FindViewById<ListView>(Resource.Id.List);
+
+            var res = await Task.Run(() => {
+                items = objArt.ElencoArticoli(id_sess, cat_padre);
+                return true;
+            });
+            listView.Adapter = new ActivityListItem_Adapter(this, items);
+
+            dialog.Dismiss();
+            return 0;
+        }
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
@@ -86,7 +103,7 @@ namespace b2bApp
                 Intent intent = new Intent(this, typeof(CatActivity));
                 intent.PutExtra("id_sess", id_sess);
                 intent.PutExtra("cat_padre", cat_padre);
-                path += cats[e.Position].Item2 + "/";
+                path = cats[e.Position].Item2;
                 intent.PutExtra("path", path);
                 StartActivity(intent);
             }
@@ -120,7 +137,7 @@ namespace b2bApp
                 intent.SetFlags(ActivityFlags.ClearTask);
                 intent.PutExtra("id_sess", id_sess);
                 intent.PutExtra("cat_padre", "0");
-                intent.PutExtra("path", "/");
+                intent.PutExtra("path", "Ricerca articoli");
                 StartActivity(intent);
             }
             return base.OnOptionsItemSelected(item);
@@ -147,6 +164,8 @@ namespace b2bApp
                 return view;
             }
         }
+
+
 
     }
 }

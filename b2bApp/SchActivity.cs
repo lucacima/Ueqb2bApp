@@ -11,10 +11,11 @@ using Android.Views;
 using Android.Widget;
 
 using System.Net;
-using Org.Json;
+using System.Json;
 using Android.Graphics;
 using System.IO;
 using System.Threading.Tasks;
+
 
 namespace b2bApp
 {
@@ -65,9 +66,9 @@ namespace b2bApp
 
             if ( riga_cart>0)
             {
-                Tuple<string, string, string, string> dati_cart = objCart.RigaCarrello(riga_cart);
+                Tuple<string, string, string, string, string> dati_cart = objCart.RigaCarrello(riga_cart);
                 etQta.Text = dati_cart.Item3;
-                etNote.Text = dati_cart.Item4;
+                etNote.Text = dati_cart.Item5;
                 btAggiungi.Text = "Aggiorna";
                 btElimina.Visibility = ViewStates.Visible;
             }
@@ -78,7 +79,8 @@ namespace b2bApp
                 {
                     if (riga_cart == 0)
                     {
-                        objCart.AggiungiCarrello(idp, nome, etQta.Text, etNote.Text);
+                        String Sconto = "0";
+                        objCart.AggiungiCarrello(idp, nome, etQta.Text, tvPrezzo.Text, etNote.Text);
                     } else
                     {
                         objCart.AggiornaCarrello(riga_cart, etQta.Text, etNote.Text);
@@ -112,23 +114,35 @@ namespace b2bApp
             LinearLayout parentContainer = FindViewById<LinearLayout>(Resource.Id.parentContainer);
             parentContainer.RequestFocus();
 
-            CaricaArticolo();
+            ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+            JsonValue articolo = objArt.DatiArticolo(idp);
+            if (articolo != null)
+            {
+                String codice = articolo["codice"];
+                nome = articolo["nome"];
+                String descrizione = articolo["descrizione"];
+                String Prezzo = articolo["prezzo_lordo"];
+                String Sconto = articolo["sconto"];
+
+                ActionBar.Title = nome;
+                tvCodice.Text = "Codice: " + codice;
+                tvPrezzo.Text = "Prezzo: " + Prezzo + " (Sc. " + Sconto + "%)";
+                tvDescr.Text = descrizione;
+            }
+
+
+            FotoArticolo();
         }
 
-        public async Task<int> CaricaArticolo()
+        public async Task<int> FotoArticolo()
         { 
-            Tuple<JSONObject, Bitmap> articolo = null;
-
-            ImageView ivfoto = FindViewById<ImageView>(Resource.Id.schFoto);
-            TextView tvCodice = FindViewById<TextView>(Resource.Id.tvCodice);
-            TextView tvPrezzo = FindViewById<TextView>(Resource.Id.tvPrezzo);
-            TextView tvDescr = FindViewById<TextView>(Resource.Id.tvDescr);
-
+            Bitmap articolo = null;
+            /*
             ProgressDialog dialog = new ProgressDialog(this);
-            dialog.SetMessage("Apertura scheda....");
+            dialog.SetMessage("Caricamento foto....");
             dialog.SetCancelable(false);
             dialog.Show();
-
+            */
             try
             {
                 var res = await Task.Run(() =>
@@ -141,29 +155,15 @@ namespace b2bApp
 
                 if ( articolo!=null)
                 {
-                    JSONObject dati = articolo.Item1;
-
-                    String codice = dati.GetString("codice");
-                    nome = dati.GetString("nome");
-                    String descrizione = dati.GetString("descrizione");
-                    String foto = dati.GetString("foto");
-                    String Prezzo = dati.GetString("prezzo_lordo");
-                    String Sconto = dati.GetString("sconto");
-                    String Disponibile = dati.GetString("disponibile");
-
-                    ActionBar.Title = nome;
-                    tvCodice.Text = "Codice: " + codice;
-                    tvPrezzo.Text = "Prezzo: " + Prezzo + " (Sc. " + Sconto + "%)";
-                    tvDescr.Text = descrizione;
-
-                    ivfoto.SetImageBitmap(articolo.Item2);
+                    ImageView ivfoto = FindViewById<ImageView>(Resource.Id.schFoto);
+                    ivfoto.SetImageBitmap(articolo);
                 }
             } catch
             {
                 ;
             }
 
-            dialog.Dismiss();
+            //dialog.Dismiss();
 
             return 0;
         }

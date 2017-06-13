@@ -97,7 +97,7 @@ namespace b2bApp
                 intent.SetFlags(ActivityFlags.ClearTask);
                 intent.PutExtra("id_sess", id_sess);
                 intent.PutExtra("cat_padre", "0");
-                intent.PutExtra("path", "/");
+                intent.PutExtra("path", "Ricerca articoli");
                 StartActivity(intent);
             }
             return base.OnOptionsItemSelected(item);

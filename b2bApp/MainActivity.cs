@@ -40,13 +40,14 @@ namespace b2bApp
                         String id_sess = objRestCli.Login(etUtente.Text, etPassword.Text);
                         if (id_sess != "")
                         {
-                            objRestCli.CatAll(id_sess);
-                            objRestCli.ArtAll(id_sess);
+                            ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+                            objArt.PrendiCategorie(id_sess);
+                            objArt.EliminaCacheArticoli();
 
                             Intent intent = new Intent(this, typeof(CatActivity));
                             intent.PutExtra("id_sess", id_sess);
                             intent.PutExtra("cat_padre", "0");
-                            intent.PutExtra("path", "/");
+                            intent.PutExtra("path", "Ricerca articoli");
                             StartActivity(intent);
 
                             this.Finish();

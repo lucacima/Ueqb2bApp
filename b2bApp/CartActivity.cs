@@ -13,7 +13,7 @@ namespace b2bApp
     public class CartActivity : Activity
     {
         String id_sess = "";
-        List<Tuple<string, string, string, string>> carts;
+        List<Tuple<string, string, string, string, string>> carts;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -62,17 +62,17 @@ namespace b2bApp
                 intent.SetFlags(ActivityFlags.ClearTask);
                 intent.PutExtra("id_sess", id_sess);
                 intent.PutExtra("cat_padre", "0");
-                intent.PutExtra("path", "/");
+                intent.PutExtra("path", "Ricerca articoli");
                 StartActivity(intent);
                 this.Finish();
             }
             return base.OnOptionsItemSelected(item);
         }
 
-        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string,string, string, string>>
+        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string,string, string, string, string>>
         {
             Activity context;
-            public ActivityListItem_Adapter(Activity context, IList<Tuple<string,string, string, string>> objects)
+            public ActivityListItem_Adapter(Activity context, IList<Tuple<string,string, string, string, string>> objects)
                 : base(context, Android.Resource.Id.Text1, objects)
             {
                 this.context = context;
@@ -85,7 +85,7 @@ namespace b2bApp
 
                 view.FindViewById<TextView>(Resource.Id.nome_cart).Text = item.Item2;
                 view.FindViewById<TextView>(Resource.Id.qta_cart).Text = item.Item3;
-                view.FindViewById<TextView>(Resource.Id.note_cart).Text = item.Item4;
+                view.FindViewById<TextView>(Resource.Id.note_cart).Text = item.Item5;
                 return view;
             }
         }
