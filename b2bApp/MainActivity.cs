@@ -10,6 +10,8 @@ namespace b2bApp
     [Activity(Label = "b2bApp", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
+        String id_sess;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -37,18 +39,19 @@ namespace b2bApp
                     try
                     {
                         clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
-                        String id_sess = objRestCli.Login(etUtente.Text, etPassword.Text);
+                        id_sess = objRestCli.Login(etUtente.Text, etPassword.Text);
                         if (id_sess != "")
                         {
                             ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
                             objArt.PrendiCategorie(id_sess);
                             objArt.EliminaCacheArticoli();
 
-                            Intent intent = new Intent(this, typeof(CatActivity));
+                            Intent intent = new Intent(this, typeof(OrdActivity));
                             intent.PutExtra("id_sess", id_sess);
-                            intent.PutExtra("cat_padre", "0");
-                            intent.PutExtra("path", "Ricerca articoli");
+                            //intent.PutExtra("cat_padre", "0");
+                            //intent.PutExtra("path", "Ricerca articoli");
                             StartActivity(intent);
+
 
                             this.Finish();
                         }
@@ -61,6 +64,7 @@ namespace b2bApp
                     {
                         Toast.MakeText(this, "Errore in fase di autenticazione", Android.Widget.ToastLength.Short).Show();
                     }
+
 
                     dialog.Dismiss();
                 } );

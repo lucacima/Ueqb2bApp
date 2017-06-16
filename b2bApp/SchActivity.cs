@@ -26,6 +26,8 @@ namespace b2bApp
         String idp = "";
         String nome = "";
         String sizeImg = "";
+        float prezzo = 0;
+        float sconto = 0;
         int riga_cart = 0;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -79,11 +81,11 @@ namespace b2bApp
                 {
                     if (riga_cart == 0)
                     {
-                        String Sconto = "0";
-                        objCart.AggiungiCarrello(idp, nome, etQta.Text, tvPrezzo.Text, etNote.Text);
+                        String str_prezzo = String.Format("{0:N2}({1:P0})", prezzo, sconto);
+                        objCart.AggiungiCarrello(idp, nome, etQta.Text, str_prezzo, etNote.Text.Replace("\n","<br>"));
                     } else
                     {
-                        objCart.AggiornaCarrello(riga_cart, etQta.Text, etNote.Text);
+                        objCart.AggiornaCarrello(riga_cart, etQta.Text, etNote.Text.Replace("\n", "<br>"));
                     }
                     Intent intent = new Intent(this, typeof(CartActivity));
                     intent.PutExtra("id_sess", id_sess);
@@ -121,12 +123,13 @@ namespace b2bApp
                 String codice = articolo["codice"];
                 nome = articolo["nome"];
                 String descrizione = articolo["descrizione"];
-                String Prezzo = articolo["prezzo_lordo"];
-                String Sconto = articolo["sconto"];
+                prezzo = (float) articolo["prezzo_lordo"];
+                sconto = (float) articolo["sconto"];
+
 
                 ActionBar.Title = nome;
                 tvCodice.Text = "Codice: " + codice;
-                tvPrezzo.Text = "Prezzo: " + Prezzo + " (Sc. " + Sconto + "%)";
+                tvPrezzo.Text = String.Format("Prezzo: {0:N2} (Sc. {1:P0})", prezzo, sconto); // "Prezzo: " +  Prezzo + " (Sc. " + Sconto + "%)";
                 tvDescr.Text = descrizione;
             }
 
@@ -148,8 +151,12 @@ namespace b2bApp
                 var res = await Task.Run(() =>
                 {
                     ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-                    articolo = objArt.Articolo(id_sess, idp, sizeImg);
+                    byte[] imageBytes = objArt.Articolo(id_sess, idp, sizeImg);
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        articolo = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
 
+                    }
                     return 0;
                 });
 

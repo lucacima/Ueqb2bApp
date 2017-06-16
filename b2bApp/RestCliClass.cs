@@ -167,5 +167,78 @@ namespace b2bApp
             return imageBytes;
         }
 
+
+        public JsonArray SitOrdini(String id_sess)
+        {
+            JsonArray ordiniArray = new JsonArray();
+
+            try
+            {
+                String reply_art = client.DownloadString(url + "?op=sitord&session_id=" + id_sess);
+                JsonValue jsobj_art = JsonValue.Parse(reply_art);
+
+                string cod_art = jsobj_art["codice"];
+                string descr_art = jsobj_art["descrizione"];
+                if (cod_art == "0")
+                {
+                    ordiniArray = (JsonArray)jsobj_art["ordini"];
+                }
+
+            }
+            catch
+            {
+                ;
+            }
+
+            return ordiniArray;
+        }
+
+        public JsonArray DettOrdini(String id_sess, String datadoc, String numdoc)
+        {
+            JsonArray ordiniArray = new JsonArray();
+
+            try
+            {
+                String reply_art = client.DownloadString(url + "?op=dettord&session_id=" + id_sess + "&datadoc=" + datadoc + "&numdoc=" + numdoc);
+                JsonValue jsobj_art = JsonValue.Parse(reply_art);
+
+                string cod_art = jsobj_art["codice"];
+                string descr_art = jsobj_art["descrizione"];
+                if (cod_art == "0")
+                {
+                    ordiniArray = (JsonArray)jsobj_art["righe_ordine"];
+                }
+
+            }
+            catch
+            {
+                ;
+            }
+
+            return ordiniArray;
+        }
+
+        public int InviaOrd(String id_sess, JsonArray carrello)
+        {
+            try
+            {
+                string data = carrello.ToString();
+                string reply = client.UploadString(url + "?op=inviaord&session_id=" + id_sess, data);
+                JsonValue jobjRes = JsonObject.Parse(reply);
+                string cod = jobjRes["codice"];
+                string descr = jobjRes["descrizione"];
+                if (cod == "0")
+                {
+                    int id_ord = jobjRes["ord_id"];
+
+                    return id_ord;
+                }
+            }
+            catch
+            {
+                ;
+            }
+            return 0;
+        }
     }
-    }
+}

@@ -2,13 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/cavallo"
-    android:layout_gravity="center_vertical" >
+    android:layout_height="match_parent" >
 
   <include
-  android:id="@+id/toolbar"
-  layout="@layout/toolbar" />
+    android:id="@+id/toolbar"
+    layout="@layout/toolbar" />
 
   <TextView
       android:text="Utente"
@@ -37,4 +35,13 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:id="@+id/btEntra" />
+
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent" 
+    android:background="@drawable/cavallo" >   
+    
+    
+  </LinearLayout>
 </LinearLayout>

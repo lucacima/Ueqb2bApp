@@ -255,9 +255,9 @@ namespace b2bApp
             return dati;
         }
 
-        public Bitmap Articolo(String id_sess, String idp, String sizeImg)
+        public byte[] Articolo(String id_sess, String idp, String sizeImg)
         {
-            Bitmap res = null;
+            byte[] imageBytes = null;
 
             try
             {
@@ -271,9 +271,8 @@ namespace b2bApp
                     {
                         foto = foto.Replace("../", "");
 
-                        bool scarica = false;
-                        Bitmap imageBitmap = null;
-                        byte[] imageBytes = null;
+                        bool scarica = false;                        
+                        
 
                         string filename = System.IO.Path.Combine(cacheDir, prefixFoto + idp + "_" + sizeImg + ".txt");
                         if (File.Exists(filename))
@@ -294,14 +293,6 @@ namespace b2bApp
                             imageBytes = RestScli.ArtFoto(foto);
                             File.WriteAllBytes(filename, imageBytes);
                         }
-
-                        if (imageBytes != null && imageBytes.Length > 0)
-                        {
-                            imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-
-                        }
-
-                        res = imageBitmap;
                     }
                 }
             }
@@ -310,7 +301,7 @@ namespace b2bApp
                 ;
             }
 
-            return res;
+            return imageBytes;
         }
 
     }

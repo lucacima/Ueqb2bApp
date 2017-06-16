@@ -29,10 +29,19 @@ namespace b2bApp
             SetActionBar(toolbar);
             ActionBar.Title = "Carrello";
 
-            Button btOrdine = FindViewById<Button>(Resource.Id.btOrdine);
-//            btOrdine.Click += 
-
             clsCart objCart = new clsCart(Application.CacheDir.AbsolutePath, id_sess);
+
+            Button btOrdine = FindViewById<Button>(Resource.Id.btOrdine);
+            btOrdine.Click += (object sender, EventArgs e) =>
+            {
+                // Controlli 
+                int id_ord = objCart.InviaOrdine();
+
+                Toast.MakeText(this, "Ordine n." + id_ord.ToString() +" creato correttamente", Android.Widget.ToastLength.Short).Show();
+                //Messaggio dopo
+                this.Finish();
+            };
+
             carts = objCart.RigheCarrello();
             listView.Adapter = new ActivityListItem_Adapter(this, carts);
         }
@@ -84,8 +93,9 @@ namespace b2bApp
                 var item = GetItem(position);
 
                 view.FindViewById<TextView>(Resource.Id.nome_cart).Text = item.Item2;
-                view.FindViewById<TextView>(Resource.Id.qta_cart).Text = item.Item3;
-                view.FindViewById<TextView>(Resource.Id.note_cart).Text = item.Item5;
+                view.FindViewById<TextView>(Resource.Id.qta_cart).Text = item.Item3 + " x ";
+                view.FindViewById<TextView>(Resource.Id.prz_cart).Text = item.Item4;
+                view.FindViewById<TextView>(Resource.Id.note_cart).Text = item.Item5.Replace("<br>","\n");
                 return view;
             }
         }

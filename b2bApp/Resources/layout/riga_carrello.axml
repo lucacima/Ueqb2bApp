@@ -7,31 +7,42 @@
      android:orientation="vertical"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:paddingLeft="10dip"                
+     android:paddingLeft="2dip"                
      android:layout_gravity="left"                
-     android:layout_weight="0.9">
+     android:layout_weight="0.80">
     <TextView
      android:id="@+id/nome_cart"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:textSize="16dip"
      android:textStyle="italic"
+     android:layout_weight="1"
          />
     <TextView
      android:id="@+id/note_cart"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:textSize="14dip"
-     android:paddingLeft="10dip"
+     android:layout_weight="1"
          />
   </LinearLayout>
   <TextView
    android:id="@+id/qta_cart"
    android:layout_width="wrap_content"
    android:layout_height="wrap_content"
-   android:textSize="14dip"
+   android:textSize="12dip"
+   android:layout_weight="0.1"
+   android:paddingLeft="2dip"
+   android:layout_gravity="left"
+         />
+  <TextView
+   android:id="@+id/prz_cart"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:textSize="12dip"
    android:layout_weight="0.1"
    android:layout_gravity="right"
          />
+
 </LinearLayout >
 

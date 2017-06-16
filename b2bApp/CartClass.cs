@@ -8,6 +8,7 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using System.IO;
+using System.Json;
 
 namespace b2bApp
 {
@@ -90,6 +91,34 @@ namespace b2bApp
             streamWriter.Close();
 
             return true;
+        }
+
+        public int InviaOrdine()
+        {
+            ArticoliClass objArt = new ArticoliClass(cacheDir);
+            List<Tuple<string, string, string, string, string>> carts = RigheCarrello();
+            JsonArray arrOrdini = new JsonArray();
+
+            for (int i = 0; i < carts.Count; i++)
+            {
+                JsonValue datiArt= objArt.DatiArticolo(carts[i].Item1);
+                JsonObject riga_ord = new JsonObject();
+                riga_ord.Add("codart", datiArt["codice"]);
+                riga_ord.Add("qta", carts[i].Item3);
+                riga_ord.Add("note", carts[i].Item5.Replace("<br>","\n"));
+                riga_ord.Add("prezzo", datiArt["prezzo_lordo"]);
+                riga_ord.Add("sconto1", datiArt["sconto"]);
+
+                arrOrdini.Add(riga_ord);
+            }
+            clsRestCli objRestCli = new clsRestCli(cacheDir);
+            int id_ord = objRestCli.InviaOrd(id_sess, arrOrdini);
+
+            // Elimino righe carrello
+            File.Delete(filename);
+
+            return id_ord;
+
         }
 
     }

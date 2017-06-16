@@ -11,6 +11,7 @@
       android:layout_height="wrap_content"
       android:layout_weight="0.98"
       android:layout_gravity="left"
+      android:textSize="14dip"            
       android:paddingRight="6dip" />
   <ImageView android:id="@android:id/icon"
       android:layout_width="24dip"
