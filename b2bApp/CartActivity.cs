@@ -13,7 +13,7 @@ namespace b2bApp
     public class CartActivity : Activity
     {
         String id_sess = "";
-        List<Tuple<string, string, string, string, string>> carts;
+        List<Tuple<string, string, string, string, string, string>> carts;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -42,7 +42,7 @@ namespace b2bApp
                 this.Finish();
             };
 
-            carts = objCart.RigheCarrello();
+            carts = objCart.ListaCarrello();
             listView.Adapter = new ActivityListItem_Adapter(this, carts);
         }
 
@@ -78,10 +78,10 @@ namespace b2bApp
             return base.OnOptionsItemSelected(item);
         }
 
-        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string,string, string, string, string>>
+        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string,string, string, string, string, string>>
         {
             Activity context;
-            public ActivityListItem_Adapter(Activity context, IList<Tuple<string,string, string, string, string>> objects)
+            public ActivityListItem_Adapter(Activity context, IList<Tuple<string,string, string, string, string, string>> objects)
                 : base(context, Android.Resource.Id.Text1, objects)
             {
                 this.context = context;
@@ -92,10 +92,11 @@ namespace b2bApp
                 var view = context.LayoutInflater.Inflate(Resource.Layout.riga_carrello, null);
                 var item = GetItem(position);
 
-                view.FindViewById<TextView>(Resource.Id.nome_cart).Text = item.Item2;
-                view.FindViewById<TextView>(Resource.Id.qta_cart).Text = item.Item3 + " x ";
-                view.FindViewById<TextView>(Resource.Id.prz_cart).Text = item.Item4;
-                view.FindViewById<TextView>(Resource.Id.note_cart).Text = item.Item5.Replace("<br>","\n");
+                view.FindViewById<TextView>(Resource.Id.codice_cart).Text = item.Item2;
+                view.FindViewById<TextView>(Resource.Id.nome_cart).Text = item.Item3;
+                view.FindViewById<TextView>(Resource.Id.qta_cart).Text = item.Item4 + " x ";
+                view.FindViewById<TextView>(Resource.Id.prz_cart).Text = item.Item5;
+                view.FindViewById<TextView>(Resource.Id.note_cart).Text = item.Item6;
                 return view;
             }
         }

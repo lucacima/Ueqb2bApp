@@ -24,7 +24,9 @@ namespace b2bApp
     {
         String id_sess = "";
         String idp = "";
+        String codice = "";
         String nome = "";
+        String descrizione = "";
         String sizeImg = "";
         float prezzo = 0;
         float sconto = 0;
@@ -68,9 +70,9 @@ namespace b2bApp
 
             if ( riga_cart>0)
             {
-                Tuple<string, string, string, string, string> dati_cart = objCart.RigaCarrello(riga_cart);
-                etQta.Text = dati_cart.Item3;
-                etNote.Text = dati_cart.Item5;
+                JsonValue dati_cart = objCart.RigaCarrello(riga_cart);
+                etQta.Text = dati_cart["Qta"];
+                etNote.Text = dati_cart["Note"];
                 btAggiungi.Text = "Aggiorna";
                 btElimina.Visibility = ViewStates.Visible;
             }
@@ -82,10 +84,10 @@ namespace b2bApp
                     if (riga_cart == 0)
                     {
                         String str_prezzo = String.Format("{0:N2}({1:P0})", prezzo, sconto);
-                        objCart.AggiungiCarrello(idp, nome, etQta.Text, str_prezzo, etNote.Text.Replace("\n","<br>"));
+                        objCart.AggiungiCarrello(idp, codice, nome, etQta.Text, str_prezzo, etNote.Text);
                     } else
                     {
-                        objCart.AggiornaCarrello(riga_cart, etQta.Text, etNote.Text.Replace("\n", "<br>"));
+                        objCart.AggiornaCarrello(riga_cart, etQta.Text, etNote.Text);
                     }
                     Intent intent = new Intent(this, typeof(CartActivity));
                     intent.PutExtra("id_sess", id_sess);
@@ -120,9 +122,9 @@ namespace b2bApp
             JsonValue articolo = objArt.DatiArticolo(idp);
             if (articolo != null)
             {
-                String codice = articolo["codice"];
+                codice = articolo["codice"];
                 nome = articolo["nome"];
-                String descrizione = articolo["descrizione"];
+                descrizione = articolo["descrizione"];
                 prezzo = (float) articolo["prezzo_lordo"];
                 sconto = (float) articolo["sconto"];
 

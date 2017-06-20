@@ -16,9 +16,7 @@ namespace b2bApp
     public class OrdActivity : Activity
     {
         String id_sess = "";
-        List<Tuple<string,string, int>> cats = new List<Tuple<string, string, int>>();
-        List<Tuple<string,string, int>> items= new List<Tuple<string, string, int>>();
-        String path = "";
+        List<Tuple<string, string, string, string>> ordini = new List<Tuple<string, string, string, string>>();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -38,53 +36,28 @@ namespace b2bApp
             SetActionBar(toolbar);
             ActionBar.Title = "Ultimi Ordini";
 
-            /*
+            OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+
+            FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = "Benvenuto Luca, \nDi seguito gli ultimi ordini:\n";
+            
+            ordini= objOrdini.ElencoOrdini(id_sess);
+            ordini.Insert(0, new Tuple<string, string, string, string>("Data", "Num", "Qta", "Imp"));
+
             ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
+            listView.Adapter = new ActivityListItem_Adapter(this, ordini);
             listView.ItemClick += OnListItemClick;  // to be defined
-
-            this.Title = path;
-            var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            SetActionBar(toolbar);
-            ActionBar.Title = path;
-
-            ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-
-            // Categorie
-            cats = objArt.ElencoCategorie(cat_padre);
-
-            CercaArticoli(cat_padre);
-            */
-        }
-
-        public async Task<int> CercaArticoli(String cat_padre)
-        {
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.SetMessage("Ricerca in corso...");
-            dialog.SetCancelable(false);
-            dialog.Show();
-
-            ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-            ListView listView = FindViewById<ListView>(Resource.Id.List);
-
-            var res = await Task.Run(() => {
-                items = objArt.ElencoArticoli(id_sess, cat_padre);
-                return true;
-            });
-            listView.Adapter = new ActivityListItem_Adapter(this, items);
-
-            dialog.Dismiss();
-            return 0;
         }
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            String cat_padre = cats[e.Position].Item1;
+            /*
             Intent intent = new Intent(this, typeof(CatActivity));
             intent.PutExtra("id_sess", id_sess);
-            intent.PutExtra("cat_padre", cat_padre);
-            path = cats[e.Position].Item2;
-            intent.PutExtra("path", path);
             StartActivity(intent);
+            */
+            OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+            var xx = objOrdini.DettOrdine(id_sess, ordini[e.Position].Item1, ordini[e.Position].Item2);
+
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -113,10 +86,10 @@ namespace b2bApp
             return base.OnOptionsItemSelected(item);
         }
 
-        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string, string, int>>
+        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string, string, string, string>>
         {
             Activity context;
-            public ActivityListItem_Adapter(Activity context, IList<Tuple<string, string, int>> objects)
+            public ActivityListItem_Adapter(Activity context, IList<Tuple<string, string, string, string>> objects)
                 : base(context, Android.Resource.Id.Text1, objects)
             {
                 this.context = context;
@@ -125,12 +98,13 @@ namespace b2bApp
             public override View GetView(int position, View convertView, ViewGroup parent)
             {
                 //var view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
-                var view = context.LayoutInflater.Inflate(Resource.Layout.lista, null);
+                var view = context.LayoutInflater.Inflate(Resource.Layout.lista_ordini, null);
                 var item = GetItem(position);
 
-                view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item2;
-                view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item3);
-
+                view.FindViewById<TextView>(Resource.Id.tvDDoc).Text = item.Item1;
+                view.FindViewById<TextView>(Resource.Id.tvNDoc).Text = item.Item2;
+                view.FindViewById<TextView>(Resource.Id.tvQta).Text = item.Item3;
+                view.FindViewById<TextView>(Resource.Id.tvImp).Text = item.Item4;
                 return view;
             }
         }

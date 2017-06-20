@@ -17,7 +17,7 @@ namespace b2bApp
     {
         String id_sess = "";
         List<Tuple<string,string, int>> cats = new List<Tuple<string, string, int>>();
-        List<Tuple<string,string, int>> items= new List<Tuple<string, string, int>>();
+        List<Tuple<string, string, string, int>> items = new List<Tuple<string, string, string, int>>();
         String path = "";
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -83,13 +83,13 @@ namespace b2bApp
             dialog.Show();
 
             ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-            ListView listView = FindViewById<ListView>(Resource.Id.List);
+            ListView listView = FindViewById<ListView>(Resource.Id.List);            
 
             var res = await Task.Run(() => {
                 items = objArt.ElencoArticoli(id_sess, cat_padre);
                 return true;
             });
-            listView.Adapter = new ActivityListItem_Adapter(this, items);
+            listView.Adapter = new ActivityListItem_Adapter2(this, items);
 
             dialog.Dismiss();
             return 0;
@@ -165,6 +165,28 @@ namespace b2bApp
             }
         }
 
+        public class ActivityListItem_Adapter2 : ArrayAdapter<Tuple<string, string, string, int>>
+        {
+            Activity context;
+            public ActivityListItem_Adapter2(Activity context, IList<Tuple<string, string, string, int>> objects)
+                : base(context, Android.Resource.Id.Text1, objects)
+            {
+                this.context = context;
+            }
+
+            public override View GetView(int position, View convertView, ViewGroup parent)
+            {
+                //var view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
+                var view = context.LayoutInflater.Inflate(Resource.Layout.lista_articoli, null);
+                var item = GetItem(position);
+
+                view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item2;
+                view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.Item3;
+                view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
+
+                return view;
+            }
+        }
 
 
     }

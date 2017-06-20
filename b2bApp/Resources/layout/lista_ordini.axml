@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="1dip"
+    android:paddingBottom="1dip"
+    android:paddingLeft="6dip"
+    android:paddingRight="6dip">
+  <TextView android:id="@+id/tvDDoc"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_gravity="left"
+      android:textSize="14dip"            
+      android:paddingRight="2dip"
+      android:text="Data" />
+  <TextView android:id="@+id/tvNDoc"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_gravity="left"
+      android:textSize="14dip"
+      android:paddingRight="2dip" 
+      android:text="Num" />
+  <TextView android:id="@+id/tvQta"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_gravity="left"
+      android:textSize="14dip"
+      android:paddingRight="2dip"
+      android:text="Qta" />
+  <TextView android:id="@+id/tvImp"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_gravity="left"
+      android:textSize="14dip"
+      android:paddingRight="2dip" 
+      android:text="Importo" />
+
+
+
+</LinearLayout>

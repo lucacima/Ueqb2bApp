@@ -24,9 +24,9 @@ namespace b2bApp
             this.cacheDir = cacheDir;
         }
 
-        public List<Tuple<string, string, int>> ElencoOrdini(String id_sess)
+        public List<Tuple<string, string, string, string>> ElencoOrdini(String id_sess)
         {
-            List<Tuple<string, string, int>> items = new List<Tuple<string, string, int>>();
+            List<Tuple<string, string, string, string>> items = new List<Tuple<string, string, string, string>>();
 
             try
             {
@@ -36,11 +36,7 @@ namespace b2bApp
                 for (int i = 0; i < ordArray.Count(); i++)
                 {
                     JsonValue item = ordArray[i];
-                    /*
-                    String idp = item["idp"];
-                    String prodotto = item["nome"];
-                    items.Add(new Tuple<string, string, int>(idp, prodotto, Resource.Drawable.cart));
-                    */
+                    items.Add(new Tuple<string, string, string, string>(item["DataDoc"], item["NumDoc"], string.Format("{0:N0}", (float) item["QtaT"]), item["TotO"]));                    
                 }
             }
             catch

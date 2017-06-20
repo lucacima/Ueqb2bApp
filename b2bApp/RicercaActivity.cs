@@ -16,7 +16,7 @@ namespace b2bApp
     public class RicercaActivity : Activity
     {
         String id_sess = "";
-        List<Tuple<string,string, int>> items= new List<Tuple<string, string, int>>();
+        List<Tuple<string,string, string, int>> items= new List<Tuple<string, string, string, int>>();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -103,10 +103,10 @@ namespace b2bApp
             return base.OnOptionsItemSelected(item);
         }
 
-        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string, string, int>>
+        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string, string, string, int>>
         {
             Activity context;
-            public ActivityListItem_Adapter(Activity context, IList<Tuple<string, string, int>> objects)
+            public ActivityListItem_Adapter(Activity context, IList<Tuple<string, string, string, int>> objects)
                 : base(context, Android.Resource.Id.Text1, objects)
             {
                 this.context = context;
@@ -115,11 +115,12 @@ namespace b2bApp
             public override View GetView(int position, View convertView, ViewGroup parent)
             {
                 //var view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
-                var view = context.LayoutInflater.Inflate(Resource.Layout.lista, null);
+                var view = context.LayoutInflater.Inflate(Resource.Layout.lista_articoli, null);
                 var item = GetItem(position);
 
                 view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item2;
-                view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item3);
+                view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.Item3;
+                view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
 
                 return view;
             }
