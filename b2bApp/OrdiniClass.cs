@@ -47,9 +47,9 @@ namespace b2bApp
             return items;
         }
 
-        public List<Tuple<string, string, int>> DettOrdine(String id_sess, String datadoc, String numdoc)
+        public List<Tuple<string, string, string, string>> DettOrdine(String id_sess, String datadoc, String numdoc)
         {
-            List<Tuple<string, string, int>> items = new List<Tuple<string, string, int>>();
+            List<Tuple<string, string, string, string>> items = new List<Tuple<string, string, string, string>>();
 
             try
             {
@@ -59,11 +59,8 @@ namespace b2bApp
                 for (int i = 0; i < ordArray.Count(); i++)
                 {
                     JsonValue item = ordArray[i];
-                    /*
-                    String idp = item["idp"];
-                    String prodotto = item["nome"];
-                    items.Add(new Tuple<string, string, int>(idp, prodotto, Resource.Drawable.cart));
-                    */
+                    String CodArt = item["CodArt"];
+                    items.Add(new Tuple<string, string, string, string>(CodArt.Trim(), item["DesArt"], string.Format("{0:N0}", (float)item["Qta"]), item["ImportoIva"]));
                 }
             }
             catch

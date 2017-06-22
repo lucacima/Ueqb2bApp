@@ -218,12 +218,35 @@ namespace b2bApp
             return ordiniArray;
         }
 
-        public int InviaOrd(String id_sess, JsonArray carrello)
+        public String InfoCli(String id_sess)
+        {
+            JsonValue dati = "";
+
+            try
+            {
+                String reply_art = client.DownloadString(url + "?op=infocli&session_id=" + id_sess);
+                JsonValue jsobj = JsonValue.Parse(reply_art);
+                string cod = jsobj["codice"];
+                string descr = jsobj["descrizione"];
+                if (cod == "0")
+                {
+                    dati = jsobj["ragsoc"];
+                }
+            }
+            catch
+            {
+                ;
+            }
+
+            return dati;
+        }
+
+        public int InviaOrd(String id_sess, JsonArray carrello, String Note)
         {
             try
             {
                 string data = carrello.ToString();
-                string reply = client.UploadString(url + "?op=inviaord&session_id=" + id_sess, data);
+                string reply = client.UploadString(url + "?op=inviaord&session_id=" + id_sess + "&note=" + Note, data);
                 JsonValue jobjRes = JsonObject.Parse(reply);
                 string cod = jobjRes["codice"];
                 string descr = jobjRes["descrizione"];

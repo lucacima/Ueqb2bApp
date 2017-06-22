@@ -32,13 +32,16 @@ namespace b2bApp
             id_sess = Intent.Extras.GetString("id_sess");
             SetContentView(Resource.Layout.ordini);
 
+            clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
+            String ragSoc = objRestCli.InfoCli(id_sess);
+
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
-            ActionBar.Title = "Ultimi Ordini";
+            ActionBar.Title = "Ultimi ordini";
 
             OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
 
-            FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = "Benvenuto Luca, \nDi seguito gli ultimi ordini:\n";
+            FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = ragSoc + "\n";
             
             ordini= objOrdini.ElencoOrdini(id_sess);
             ordini.Insert(0, new Tuple<string, string, string, string>("Data", "Num", "Qta", "Imp"));
@@ -50,14 +53,13 @@ namespace b2bApp
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            /*
-            Intent intent = new Intent(this, typeof(CatActivity));
+            
+            Intent intent = new Intent(this, typeof(DettOrdActivity));
             intent.PutExtra("id_sess", id_sess);
-            StartActivity(intent);
-            */
-            OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
-            var xx = objOrdini.DettOrdine(id_sess, ordini[e.Position].Item1, ordini[e.Position].Item2);
+            intent.PutExtra("data_ord", ordini[e.Position].Item1);
+            intent.PutExtra("num_ord", ordini[e.Position].Item2);
 
+            StartActivity(intent);                  
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

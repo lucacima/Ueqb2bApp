@@ -57,6 +57,7 @@
     <Compile Include="CartActivity.cs" />
     <Compile Include="CartClass.cs" />
     <Compile Include="ArticoliClass.cs" />
+    <Compile Include="DettOrdActivity.cs" />
     <Compile Include="OrdActivity.cs" />
     <Compile Include="OrdiniClass.cs" />
     <Compile Include="RicercaActivity.cs" />
@@ -99,6 +100,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\lista_articoli.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\dett_ordine.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

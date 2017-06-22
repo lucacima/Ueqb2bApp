@@ -91,7 +91,7 @@ namespace b2bApp
             return true;
         }
 
-        public int InviaOrdine()
+        public int InviaOrdine(String Note)
         {
             ArticoliClass objArt = new ArticoliClass(cacheDir);
             JsonArray carts = RigheCarrello();
@@ -110,7 +110,7 @@ namespace b2bApp
                 arrOrdini.Add(riga_ord);
             }
             clsRestCli objRestCli = new clsRestCli(cacheDir);
-            int id_ord = objRestCli.InviaOrd(id_sess, arrOrdini);
+            int id_ord = objRestCli.InviaOrd(id_sess, arrOrdini, Note);
 
             // Elimino righe carrello
             File.Delete(filename);

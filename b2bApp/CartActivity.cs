@@ -35,7 +35,8 @@ namespace b2bApp
             btOrdine.Click += (object sender, EventArgs e) =>
             {
                 // Controlli 
-                int id_ord = objCart.InviaOrdine();
+                EditText etNote = FindViewById<EditText>(Resource.Id.etNote);
+                int id_ord = objCart.InviaOrdine(etNote.Text);
 
                 Toast.MakeText(this, "Ordine n." + id_ord.ToString() +" creato correttamente", Android.Widget.ToastLength.Short).Show();
                 //Messaggio dopo
