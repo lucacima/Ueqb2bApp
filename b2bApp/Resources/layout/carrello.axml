@@ -15,16 +15,23 @@
       android:layout_weight="1"
     />
 
+  <TextView
+      android:text="Note"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="0.1"
+      android:id="@+id/tvNote" />  
+  
   <EditText
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="0.2"
+    android:layout_weight="0.1"
     android:id="@+id/etNote" />
-  
+    
   <Button
       android:text="Invia ordine"
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_weight="0.1"
+      android:layout_weight="0.15"
       android:id="@+id/btOrdine" />  
 </LinearLayout>

@@ -30,12 +30,11 @@ namespace b2bApp
             ActionBar.Title = "Carrello";
 
             clsCart objCart = new clsCart(Application.CacheDir.AbsolutePath, id_sess);
-
+            EditText etNote = FindViewById<EditText>(Resource.Id.etNote);
             Button btOrdine = FindViewById<Button>(Resource.Id.btOrdine);
             btOrdine.Click += (object sender, EventArgs e) =>
             {
-                // Controlli 
-                EditText etNote = FindViewById<EditText>(Resource.Id.etNote);
+                // Controlli                 
                 int id_ord = objCart.InviaOrdine(etNote.Text);
 
                 Toast.MakeText(this, "Ordine n." + id_ord.ToString() +" creato correttamente", Android.Widget.ToastLength.Short).Show();
@@ -49,6 +48,9 @@ namespace b2bApp
             if ( carts.Count==0)
             {
                 btOrdine.Visibility = ViewStates.Invisible;
+                TextView tvNote = FindViewById<TextView>(Resource.Id.tvNote);
+                tvNote.Visibility = ViewStates.Invisible;
+                etNote.Visibility = ViewStates.Invisible;
             }
         }
 

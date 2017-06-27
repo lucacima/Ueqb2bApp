@@ -36,12 +36,14 @@ namespace b2bApp
                 dialog.Show();
 
                 String Error = "";
-                var res= Task.Run(() => {
-                    try
+                try
+                {
+
+                    clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
+                    id_sess = objRestCli.Login(etUtente.Text, etPassword.Text);
+                    if (id_sess != "")
                     {
-                        clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
-                        id_sess = objRestCli.Login(etUtente.Text, etPassword.Text);
-                        if (id_sess != "")
+                        var res = Task.Run(() =>
                         {
                             ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
                             objArt.PrendiCategorie(id_sess);
@@ -55,23 +57,26 @@ namespace b2bApp
 
 
                             this.Finish();
-                        }
-                        else
-                        {
-                            // Messaggio utente o password errati
-                            Error = "Utente o password non validi";                            
-                        }
-                    } catch
+
+                        });
+
+                    } else
                     {
-                        Error = "Errore in fase di autenticazione";
-                    }                    
-                    if ( Error!="")
-                    {
-                        //Toast.MakeText(this, Error, Android.Widget.ToastLength.Short).Show();
-                        //dialog.SetMessage(Error);
+                        // Messaggio utente o password errati
+                        Error = "Utente o password non validi";
                     }
-                    dialog.Dismiss();
-                } );
+
+                }
+                catch
+                {
+                    Error = "Errore in fase di autenticazione";
+                }
+                dialog.Dismiss();
+                if (Error != "")
+                {
+                    Toast.MakeText(this, Error, Android.Widget.ToastLength.Short).Show();
+                }
+                
             };
 
         }
