@@ -58,10 +58,35 @@ namespace b2bApp
         }
 
         public bool AggiungiCarrello(String idp, String codice, String nome, String Qta, String Prezzo, String Note)
-        {
-            JsonObject riga = new JsonObject(new KeyValuePair<string, JsonValue>("idp", idp), new KeyValuePair<string, JsonValue>("codice", codice), new KeyValuePair<string, JsonValue>("nome", nome), new KeyValuePair<string, JsonValue>("Qta", Qta), new KeyValuePair<string, JsonValue>("Prezzo", Prezzo), new KeyValuePair<string, JsonValue>("Note", Note));
+        {            
             JsonArray arrRighe = RigheCarrello();
-            arrRighe.Add(riga);
+            int trovato = -1;
+
+            // Controllo se codice già esistente
+            for (int i = 0; i < arrRighe.Count; i++)
+            {
+                if ( arrRighe[i]["codice"]==codice )
+                {
+                    int QtaCalc = Convert.ToInt32(Qta) + (int)arrRighe[i]["Qta"];
+
+                    Qta = QtaCalc.ToString();
+                    if (arrRighe[i]["Note"]!="" )
+                    {
+                        Note = arrRighe[i]["Note"] + "\n" + Note;
+                    }                    
+                    trovato = i;
+                    break;
+                }
+            }
+            JsonObject riga = new JsonObject(new KeyValuePair<string, JsonValue>("idp", idp), new KeyValuePair<string, JsonValue>("codice", codice), new KeyValuePair<string, JsonValue>("nome", nome), new KeyValuePair<string, JsonValue>("Qta", Qta), new KeyValuePair<string, JsonValue>("Prezzo", Prezzo), new KeyValuePair<string, JsonValue>("Note", Note));
+            if ( trovato==-1)
+            {
+                arrRighe.Add(riga);
+            } else
+            {
+                arrRighe[trovato] = riga;
+            }
+            
 
             return ScriviCarrello(arrRighe);
         }

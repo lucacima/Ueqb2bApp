@@ -35,6 +35,7 @@ namespace b2bApp
                 dialog.SetCancelable(false);
                 dialog.Show();
 
+                String Error = "";
                 var res= Task.Run(() => {
                     try
                     {
@@ -58,14 +59,17 @@ namespace b2bApp
                         else
                         {
                             // Messaggio utente o password errati
-                            Toast.MakeText(this, "Utente o password non validi", Android.Widget.ToastLength.Short).Show();
+                            Error = "Utente o password non validi";                            
                         }
                     } catch
                     {
-                        Toast.MakeText(this, "Errore in fase di autenticazione", Android.Widget.ToastLength.Short).Show();
+                        Error = "Errore in fase di autenticazione";
+                    }                    
+                    if ( Error!="")
+                    {
+                        //Toast.MakeText(this, Error, Android.Widget.ToastLength.Short).Show();
+                        //dialog.SetMessage(Error);
                     }
-
-
                     dialog.Dismiss();
                 } );
             };

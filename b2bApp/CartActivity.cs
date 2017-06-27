@@ -45,6 +45,11 @@ namespace b2bApp
 
             carts = objCart.ListaCarrello();
             listView.Adapter = new ActivityListItem_Adapter(this, carts);
+
+            if ( carts.Count==0)
+            {
+                btOrdine.Visibility = ViewStates.Invisible;
+            }
         }
 
 
