@@ -1,0 +1,9 @@
+CREATE TABLE `session` (
+  `ids` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` varchar(13) NOT NULL,
+  `data_creazione` datetime NOT NULL,
+  `data_ultimo_accesso` datetime DEFAULT NULL,
+  `user_id` varchar(20) NOT NULL,
+  PRIMARY KEY (`ids`),
+  UNIQUE KEY `idxsess` (`session_id`)
+);
