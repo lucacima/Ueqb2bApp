@@ -13,7 +13,7 @@ namespace b2bApp
     public class CartActivity : Activity
     {
         String id_sess = "";
-        List<Tuple<string, string, string, string, string, string>> carts;
+        List<Tuple<string, string, int, float, int, int, string>> carts;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -44,6 +44,10 @@ namespace b2bApp
 
             carts = objCart.ListaCarrello();
             listView.Adapter = new ActivityListItem_Adapter(this, carts);
+
+            float tot = objCart.TotaleCarrello();
+            TextView tvTot = FindViewById<TextView>(Resource.Id.tvTot);
+            tvTot.Text = tvTot.Text + " " + String.Format("{0:N2}", tot);
 
             if ( carts.Count==0)
             {
@@ -86,10 +90,10 @@ namespace b2bApp
             return base.OnOptionsItemSelected(item);
         }
 
-        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string,string, string, string, string, string>>
+        public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string, string, int, float, int, int, string>>
         {
             Activity context;
-            public ActivityListItem_Adapter(Activity context, IList<Tuple<string,string, string, string, string, string>> objects)
+            public ActivityListItem_Adapter(Activity context, IList<Tuple<string, string, int, float, int, int, string>> objects)
                 : base(context, Android.Resource.Id.Text1, objects)
             {
                 this.context = context;
@@ -100,11 +104,19 @@ namespace b2bApp
                 var view = context.LayoutInflater.Inflate(Resource.Layout.riga_carrello, null);
                 var item = GetItem(position);
 
-                view.FindViewById<TextView>(Resource.Id.codice_cart).Text = item.Item2;
-                view.FindViewById<TextView>(Resource.Id.nome_cart).Text = item.Item3;
-                view.FindViewById<TextView>(Resource.Id.qta_cart).Text = item.Item4 + " x ";
-                view.FindViewById<TextView>(Resource.Id.prz_cart).Text = item.Item5;
-                view.FindViewById<TextView>(Resource.Id.note_cart).Text = item.Item6;
+                view.FindViewById<TextView>(Resource.Id.codice_cart).Text = item.Item1;
+                view.FindViewById<TextView>(Resource.Id.nome_cart).Text = item.Item2;
+                view.FindViewById<TextView>(Resource.Id.qta_cart).Text = String.Format("{0:N0}", item.Item3);
+                String str_prezzo = String.Format("{0:N2}({1:N0}%)", item.Item4, item.Item5);
+                view.FindViewById<TextView>(Resource.Id.prz_cart).Text = str_prezzo;
+                view.FindViewById<TextView>(Resource.Id.iva_cart).Text = String.Format("{0:N0}%",item.Item6);
+                float netto = (float)item.Item4 - ((float)item.Item4 * (float)item.Item5 / 100);
+                float importo = netto * (int)item.Item3;
+                float importoIva = importo + (importo * (int)item.Item6 / 100);
+
+                String str_importo = String.Format("{0:N2}", importoIva);
+                view.FindViewById<TextView>(Resource.Id.imp_cart).Text = str_importo;
+                view.FindViewById<TextView>(Resource.Id.note_cart).Text = item.Item7;
                 return view;
             }
         }

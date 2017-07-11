@@ -22,7 +22,7 @@
      android:id="@+id/nome_cart"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:textSize="16dip"
+     android:textSize="14dip"
      android:textStyle="italic"
      android:layout_weight="1"
          />
@@ -30,7 +30,7 @@
      android:id="@+id/note_cart"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:textSize="14dip"
+     android:textSize="12dip"
      android:layout_weight="1"
          />
   </LinearLayout>
@@ -38,16 +38,30 @@
    android:id="@+id/qta_cart"
    android:layout_width="0dp"
    android:layout_height="wrap_content"
-   android:textSize="12dip"
+   android:textSize="10dip"
    android:layout_weight="0.1"
    android:paddingLeft="2dip"
-   android:layout_gravity="left"
-         />
+   android:layout_gravity="left" />
   <TextView
    android:id="@+id/prz_cart"
    android:layout_width="0dp"
    android:layout_height="wrap_content"
-   android:textSize="12dip"
+   android:textSize="10dip"
+   android:layout_weight="0.3"
+   android:layout_gravity="left" />
+  <TextView
+   android:id="@+id/iva_cart"
+   android:layout_width="0dp"
+   android:layout_height="wrap_content"
+   android:textSize="8dip"
+   android:layout_weight="0.2"
+   android:layout_gravity="left" />
+
+  <TextView
+   android:id="@+id/imp_cart"
+   android:layout_width="0dp"
+   android:layout_height="wrap_content"
+   android:textSize="10dip"
    android:layout_weight="0.3"
    android:layout_gravity="right"
          />

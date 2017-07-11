@@ -30,6 +30,7 @@ namespace b2bApp
         String sizeImg = "";
         float prezzo = 0;
         float sconto = 0;
+        float aliva = 22;
         int riga_cart = 0;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -83,8 +84,7 @@ namespace b2bApp
                 {
                     if (riga_cart == 0)
                     {
-                        String str_prezzo = String.Format("{0:N2}({1:P0})", prezzo, sconto);
-                        objCart.AggiungiCarrello(idp, codice, nome, etQta.Text, str_prezzo, etNote.Text);
+                        objCart.AggiungiCarrello(idp, codice, nome, etQta.Text, prezzo, sconto, aliva, etNote.Text);
                     } else
                     {
                         objCart.AggiornaCarrello(riga_cart, etQta.Text, etNote.Text);
@@ -127,11 +127,12 @@ namespace b2bApp
                 descrizione = articolo["descrizione"];
                 prezzo = (float) articolo["prezzo_lordo"];
                 sconto = (float) articolo["sconto"];
+                aliva = (float) articolo["aliva"];
 
 
                 ActionBar.Title = nome;
                 tvCodice.Text = "Codice: " + codice;
-                tvPrezzo.Text = String.Format("Prezzo: {0:N2} (Sc. {1:P0})", prezzo, sconto); // "Prezzo: " +  Prezzo + " (Sc. " + Sconto + "%)";
+                tvPrezzo.Text = String.Format("Prezzo: {0:N2} (Sc. {1:N0}%)", prezzo, sconto); // "Prezzo: " +  Prezzo + " (Sc. " + Sconto + "%)";
                 tvDescr.Text = descrizione;
             }
 

@@ -16,6 +16,15 @@
     />
 
   <TextView
+        android:text="Totale:"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:textAlignment="center"
+        android:textSize="20dip"
+        android:id="@+id/tvTot" />
+  
+  <TextView
       android:text="Note"
       android:layout_width="match_parent"
       android:layout_height="0dp"
