@@ -10,10 +10,10 @@ $lingua=1;
 if ( isset($_GET['lingua']) ) $lingua = $_GET['lingua'];
 
 // Parametri MySQL
-$hostname = "127.0.0.1";
-$username = "root";
-$password = "root";
-$dbName   = "umbriaeq";
+$hostname = "localhost";
+$username = "si2bxkky_luca";
+$password = "umbriaeq_2017";
+$dbName   = "si2bxkky_umbriaeq";
 
 //Classe b2blib
 $b2bl = new b2blib($hostname, $username, $password,$dbName,$lingua);
@@ -34,7 +34,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         
         $query = "SELECT ordini.NumOrd,ordini.Anno,ordini.Data,ordini.CodCli,ordini.CodDest,ordini.Note,ordini.note2,righeordini.CodArt,SUM(righeordini.Qta) as QtaT,righeordini.PzLordo,righeordini.Sconto1 ";
         $query.= "FROM ordini INNER JOIN righeordini ON ( ordini.NumOrd=righeordini.IdOrd AND ordini.Anno=righeordini.Anno) ";
-        $query.= "WHERE ordini.Stato='I' GROUP BY ordini.NumOrd,ordini.Anno,ordini.Data,ordini.CodCli,ordini.CodDest,ordini.Note,ordini.note2,righeordini.CodArt,righeordini.PzLordo,righeordini.Sconto1";
+        $query.= "WHERE ordini.Stato='N' GROUP BY ordini.NumOrd,ordini.Anno,ordini.Data,ordini.CodCli,ordini.CodDest,ordini.Note,ordini.note2,righeordini.CodArt,righeordini.PzLordo,righeordini.Sconto1";
         $result = mysql_query($query);
         $data=mysql_fetch_array($result);
         

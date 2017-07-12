@@ -272,7 +272,7 @@ function articoli($user_id,$cat,$riclib,$ord=0) {
 		// Calcolo Sconto ?????		
 		$Sco1= $this->CalcolaSco($data['ScoCli'],$data['ScoCla'],$data['ScoClCli']);
 		
-        $elem= array('idp' => $data['product_id'], 'codice' => trim($data['model']),'nome' => trim($data['name']), 'prezzo_lordo' => $data['PrLordo'], 'sconto' => $Sco1, 'descrizione' => trim($data['description']));
+        $elem= array('idp' => $data['product_id'], 'codice' => trim($data['model']),'nome' => trim($data['name']), 'prezzo_lordo' => $data['PrLordo'], 'sconto' => $Sco1, 'aliva' => $data['AlIva'], 'descrizione' => trim($data['description']));
 		array_push($eleprod,$elem);
 		$i++;
 	}
@@ -330,7 +330,7 @@ function schedart($user_id,$idp,$sizeimg) {
 		} else {
 			$disponibile= $this->Descr["Si"][$this->lingua];
 		}
-        $scheda= array('idp' => $data['product_id'],'codice' => trim($data['model']),'nome' => trim($data['name']),'descrizione' => trim($data['description']), 'prezzo_lordo' => $data['PrLordo'], 'sconto' => $Sco1, 'foto' => $foto, 'foto_len' => filesize($foto),'disponibile' => $disponibile);
+        $scheda= array('idp' => $data['product_id'],'codice' => trim($data['model']),'nome' => trim($data['name']),'descrizione' => trim($data['description']), 'prezzo_lordo' => $data['PrLordo'], 'sconto' => $Sco1, 'aliva' => $data['AlIva'], 'foto' => $foto, 'foto_len' => filesize($foto),'disponibile' => $disponibile);
 	}
 	
 	return $scheda;
@@ -381,11 +381,10 @@ function inviaord($id_sess, $user_id,$carrello,$note1="",$note2="",$stampante=""
 	}
 	mysql_free_result($result);
 
-    /*
 	//Aggiorno stato per importazione in Gamma
 	$query = "UPDATE ordini SET Stato='N' WHERE NumOrd=$idord AND Anno=".date("Y");
 	mysql_query($query);	
-    */
+
     $this->conford($user_id,$idord,'Umbria Equitazione','Via Citernese, 112','06016 San Giustino (PG)');	
     
     
@@ -490,7 +489,6 @@ function conford($user_id,$idord,$ind1='Umbria Equitazione',$ind2='Via Citernese
 	
     mysql_free_result($result);
 
-    /* DA TOGLIERE COMMENTO IN PRODUZIONE
     if ( $user_id==0 ) {
         $data['Email']= 'ordini@umbriaequitazione.com;info@umbriaequitazione.com;luca.cimarossa@gmail.com';
     } else {
@@ -499,8 +497,6 @@ function conford($user_id,$idord,$ind1='Umbria Equitazione',$ind2='Via Citernese
         $data=mysql_fetch_array($result);
         mysql_free_result($result);
     }
-	*/    
-    $data['Email']= 'luca.cimarossa@gmail.com';
     
 	if ( $data['Email']!='' ) {
 		$this->InviaEmail($data['Email'],"Riepilogo ordine",strip_tags($mess),$mess);

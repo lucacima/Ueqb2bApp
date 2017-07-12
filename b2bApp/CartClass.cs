@@ -110,6 +110,13 @@ namespace b2bApp
             return ScriviCarrello(arrRighe);
         }
 
+        public string IdpCarrello(int riga)
+        {
+            JsonValue valori = RigaCarrello(riga);
+
+            return valori["idp"];
+        }
+
         public bool AggiornaCarrello(int riga, String Qta, String Note)
             
         {

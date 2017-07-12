@@ -14,6 +14,7 @@ namespace b2bApp
     {
         String id_sess = "";
         List<Tuple<string, string, int, float, int, int, string>> carts;
+        clsCart objCart;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -29,7 +30,7 @@ namespace b2bApp
             SetActionBar(toolbar);
             ActionBar.Title = "Carrello";
 
-            clsCart objCart = new clsCart(Application.CacheDir.AbsolutePath, id_sess);
+            objCart = new clsCart(Application.CacheDir.AbsolutePath, id_sess);
             EditText etNote = FindViewById<EditText>(Resource.Id.etNote);
             Button btOrdine = FindViewById<Button>(Resource.Id.btOrdine);
             btOrdine.Click += (object sender, EventArgs e) =>
@@ -63,7 +64,8 @@ namespace b2bApp
         {
             Intent intent = new Intent(this, typeof(SchActivity));
             intent.PutExtra("id_sess", id_sess);
-            intent.PutExtra("idp", carts[e.Position].Item1);
+            string idp = objCart.IdpCarrello(e.Position+1);
+            intent.PutExtra("idp", idp);
             intent.PutExtra("riga_cart", e.Position+1);
             StartActivity(intent);
             this.Finish();

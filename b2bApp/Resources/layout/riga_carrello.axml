@@ -63,6 +63,7 @@
    android:layout_height="wrap_content"
    android:textSize="10dip"
    android:layout_weight="0.3"
+   android:textAlignment="gravity"
    android:layout_gravity="right"
          />
 
