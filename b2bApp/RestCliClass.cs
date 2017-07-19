@@ -15,7 +15,7 @@ namespace b2bApp
 
         public clsRestCli(String cacheDir)
         {
-            urlBase = "http://2.115.37.22/umbriaeq/";
+            urlBase = "http://www.umbriaeqb2b.com/";
             url = urlBase + "rest/b2brest.php";
             client = new WebClient();
             client.Encoding = System.Text.Encoding.UTF8;
