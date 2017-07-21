@@ -167,6 +167,20 @@ namespace b2bApp
             return imageBytes;
         }
 
+        public JsonArray ElencoFoto()
+        {
+            JsonArray arrFoto = new JsonArray();
+            string reply_foto = client.DownloadString(urlBase + "rest/b2bsync.php?op=elencofoto&cartella=../tmp");
+            JsonValue jsobj = JsonValue.Parse(reply_foto);
+            string cod_art = jsobj["codice"];
+            string descr_art = jsobj["descrizione"];
+            if (cod_art == "0")
+            {
+                arrFoto = (JsonArray)jsobj["elenco_foto"];
+            }
+
+            return arrFoto;
+        }
 
         public JsonArray SitOrdini(String id_sess)
         {

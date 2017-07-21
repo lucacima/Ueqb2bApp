@@ -80,8 +80,11 @@ namespace b2bApp
 
             btAggiungi.Click += (object sender, EventArgs e) =>
             {
+                btAggiungi.Enabled = false;
                 if ( etQta.Text!="" )
                 {
+                    
+
                     if (riga_cart == 0)
                     {
                         objCart.AggiungiCarrello(idp, codice, nome, etQta.Text, prezzo, sconto, aliva, etNote.Text);
@@ -98,10 +101,12 @@ namespace b2bApp
                 {
                     Toast.MakeText(this, "Specificare la quantità", Android.Widget.ToastLength.Short).Show();
                 }
+                btAggiungi.Enabled = true;
             };
 
             btElimina.Click += (object sender, EventArgs e) =>
             {
+                btElimina.Enabled = false;
                 if (riga_cart > 0)
                 {
                     objCart.EliminaCarrello(riga_cart);
@@ -111,6 +116,7 @@ namespace b2bApp
                 StartActivity(intent);
 
                 this.Finish();
+                btElimina.Enabled = true;
             };
 
 

@@ -56,6 +56,7 @@ namespace b2bApp
                 TextView tvNote = FindViewById<TextView>(Resource.Id.tvNote);
                 tvNote.Visibility = ViewStates.Invisible;
                 etNote.Visibility = ViewStates.Invisible;
+                tvTot.Visibility = ViewStates.Invisible;
             }
         }
 

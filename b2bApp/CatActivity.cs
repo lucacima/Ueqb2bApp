@@ -18,6 +18,7 @@ namespace b2bApp
         String id_sess = "";
         List<Tuple<string,string, int>> cats = new List<Tuple<string, string, int>>();
         List<Tuple<string, string, string, int>> items = new List<Tuple<string, string, string, int>>();
+        List<Tuple<string, string, string, int>> items_all = new List<Tuple<string, string, string, int>>();
         String path = "";
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -63,15 +64,16 @@ namespace b2bApp
 
             // Categorie
             cats = objArt.ElencoCategorie(cat_padre);
+            CercaArticoli(cat_padre);
 
             //Articoli
-            if (cats.Count == 0)
-            {
-                CercaArticoli(cat_padre);
-            } else
-            {
-                listView.Adapter = new ActivityListItem_Adapter(this, cats);
-            }
+            //if (cats.Count == 0)
+            //{
+            //    CercaArticoli(cat_padre);
+            //} else
+            //{
+            //    listView.Adapter = new ActivityListItem_Adapter(this, cats);
+            //}
 
         }
 
@@ -89,7 +91,18 @@ namespace b2bApp
                 items = objArt.ElencoArticoli(id_sess, cat_padre);
                 return true;
             });
-            listView.Adapter = new ActivityListItem_Adapter2(this, items);
+      
+            for (int i=0; i<cats.Count;i++)
+            {
+                items_all.Add(new Tuple<string, string, string, int>(cats[i].Item1, "", cats[i].Item2, cats[i].Item3));
+            }
+            for (int i = 0; i < items.Count; i++)
+            {
+                items_all.Add(new Tuple<string, string, string, int>(items[i].Item1, items[i].Item2, items[i].Item3, items[i].Item4));
+            }
+
+
+            listView.Adapter = new ActivityListItem_Adapter2(this, items_all);
 
             dialog.Dismiss();
             return 0;
@@ -97,9 +110,9 @@ namespace b2bApp
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            if (cats.Count > 0)
+            if (items_all[e.Position].Item4== Resource.Drawable.freccia)
             {
-                String cat_padre = cats[e.Position].Item1;
+                String cat_padre = items_all[e.Position].Item1;
                 Intent intent = new Intent(this, typeof(CatActivity));
                 intent.PutExtra("id_sess", id_sess);
                 intent.PutExtra("cat_padre", cat_padre);
@@ -109,12 +122,30 @@ namespace b2bApp
             }
             else
             {
-                String idp = items[e.Position].Item1;
+                String idp = items_all[e.Position].Item1;
                 Intent intent = new Intent(this, typeof(SchActivity));
                 intent.PutExtra("id_sess", id_sess);
                 intent.PutExtra("idp", idp);
                 StartActivity(intent);
             }
+            //if (cats.Count > 0)
+            //{
+            //    String cat_padre = cats[e.Position].Item1;
+            //    Intent intent = new Intent(this, typeof(CatActivity));
+            //    intent.PutExtra("id_sess", id_sess);
+            //    intent.PutExtra("cat_padre", cat_padre);
+            //    path = cats[e.Position].Item2;
+            //    intent.PutExtra("path", path);
+            //    StartActivity(intent);
+            //}
+            //else
+            //{
+            //    String idp = items[e.Position].Item1;
+            //    Intent intent = new Intent(this, typeof(SchActivity));
+            //    intent.PutExtra("id_sess", id_sess);
+            //    intent.PutExtra("idp", idp);
+            //    StartActivity(intent);
+            //}
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -157,7 +188,7 @@ namespace b2bApp
                 //var view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
                 var view = context.LayoutInflater.Inflate(Resource.Layout.lista, null);
                 var item = GetItem(position);
-
+                
                 view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item2;
                 view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item3);
 
@@ -177,14 +208,36 @@ namespace b2bApp
             public override View GetView(int position, View convertView, ViewGroup parent)
             {
                 //var view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
-                var view = context.LayoutInflater.Inflate(Resource.Layout.lista_articoli, null);
                 var item = GetItem(position);
-
-                view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item2;
-                view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.Item3;
-                view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
-
+                var view = context.LayoutInflater.Inflate(Resource.Layout.lista, null);
+                if (item.Item2 != "")
+                {
+                    view = context.LayoutInflater.Inflate(Resource.Layout.lista_articoli, null);
+                    view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item2;
+                    view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.Item3;
+                    view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
+                }
+                else
+                {
+                    view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item3;
+                    view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
+                }
                 return view;
+
+
+                //string colonna = item.Item3;
+                //if ( item.Item2!="")
+                //{
+                //    colonna = item.Item2.PadRight(15) + colonna;
+                //}
+                //view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = colonna;
+                //view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
+
+                ////view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item2;
+                ////view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.Item3;
+                ////view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
+
+                //return view;
             }
         }
 

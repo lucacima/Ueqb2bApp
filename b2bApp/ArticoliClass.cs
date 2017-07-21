@@ -14,6 +14,7 @@ namespace b2bApp
         String prefixArt = "b2bAppCacheA";
         String prefixSch = "b2bAppCacheS";
         String prefixFoto = "b2bAppCacheF";
+        string fElenco_foto = "b2bAppCacheElenco_foto.json";
 
         public ArticoliClass(String cacheDir)
         {
@@ -34,6 +35,7 @@ namespace b2bApp
                 clsRestCli RestScli = new clsRestCli(cacheDir);
                 JsonArray catArray = RestScli.CatAll(id_sess);
 
+                // Elenco categorie
                 String filename = System.IO.Path.Combine(cacheDir, prefixCat + "0.json");
                 String cat_padre = "0";
 
@@ -52,6 +54,10 @@ namespace b2bApp
                     catFArray.Add(item);
                 }
                 File.WriteAllText(filename, catFArray.ToString());
+
+                // Elenco foto
+                JsonArray fotoArray = RestScli.ElencoFoto();
+                ScriviElencoFoto(fotoArray);
 
                 return true;
             }
@@ -203,46 +209,123 @@ namespace b2bApp
             return dati;
         }
 
+        public JsonArray ElencoFoto()
+        {
+            JsonArray arrFoto = new JsonArray();
+
+
+            string filename = System.IO.Path.Combine(cacheDir, fElenco_foto);
+            if ( File.Exists(filename) )
+            {
+                string strElenco = File.ReadAllText(filename);
+                arrFoto = (JsonArray) JsonValue.Parse(strElenco);
+            }
+
+            return arrFoto;
+        }
+
+        private bool aggElencoFoto(string nome_foto, long size_foto)
+        {
+            JsonArray arrFoto = ElencoFoto();
+
+            JsonObject jobj = new JsonObject(new KeyValuePair<string, JsonValue>("filename", nome_foto), new KeyValuePair<string, JsonValue>("size", size_foto));
+            arrFoto.Add(jobj);
+
+            ScriviElencoFoto(arrFoto);
+
+            return true;
+        }
+
+        private bool ScriviElencoFoto(JsonArray fotoArray)
+        {
+            string filename = System.IO.Path.Combine(cacheDir, fElenco_foto);
+            File.WriteAllText(filename, fotoArray.ToString());
+
+            return true;
+        }
+
         public byte[] Articolo(String id_sess, String idp, String sizeImg)
         {
             byte[] imageBytes = null;
 
             try
             {
-                clsRestCli RestScli = new clsRestCli(cacheDir);
-                JsonValue dati = RestScli.ArtIdp(id_sess, idp, sizeImg);
-                if (dati != null) {
-                    //JsonValue dati = jsonArt["articolo"];
-                    String foto = dati["foto"];
-                    long foto_len = dati["foto_len"];
-                    if (foto != "")
-                    {
-                        foto = foto.Replace("../", "");
 
-                        bool scarica = false;                        
-                        
+                JsonValue articolo = DatiArticolo(idp);
+                JsonArray arrFoto = ElencoFoto();
+                string nomeFoto = sizeImg + "x" + sizeImg + "_" + articolo["codice"] + ".jpg";
 
-                        string filename = System.IO.Path.Combine(cacheDir, prefixFoto + idp + "_" + sizeImg + ".jpg");
-                        if (File.Exists(filename))
+                string filename = System.IO.Path.Combine(cacheDir, prefixFoto + idp + "_" + sizeImg + ".jpg");
+                if (File.Exists(filename))
+                {
+                    long file_len = new System.IO.FileInfo(filename).Length;
+                    
+                    for (int i = 0; i < arrFoto.Count; i++)
+                    {                        
+                        string nomeFoto2 = arrFoto[i]["filename"];
+
+                        if (nomeFoto.ToUpper() == nomeFoto2.ToUpper())
                         {
-                            long file_len = new System.IO.FileInfo(filename).Length;
-                            if (foto_len != file_len)
-                            {
-                                scarica = true;
-                            }
-                            else
+                            long fotoSize = arrFoto[i]["size"];
+                            if (file_len == fotoSize)
                             {
                                 imageBytes = File.ReadAllBytes(filename);
+                                return imageBytes;
                             }
-                        } else scarica = true;
-
-                        if (scarica)
-                        {
-                            imageBytes = RestScli.ArtFoto(foto);
-                            File.WriteAllBytes(filename, imageBytes);
+                            break;
                         }
                     }
                 }
+
+                clsRestCli RestScli = new clsRestCli(cacheDir);
+                JsonValue dati = RestScli.ArtIdp(id_sess, idp, sizeImg);
+                if (dati != null)
+                {
+                    //JsonValue dati = jsonArt["articolo"];
+                    String foto = dati["foto"];
+                    imageBytes = RestScli.ArtFoto(foto);
+                    File.WriteAllBytes(filename, imageBytes);
+
+                    aggElencoFoto(nomeFoto, imageBytes.Length);
+                }
+                
+                return imageBytes;
+
+
+                //clsRestCli RestScli = new clsRestCli(cacheDir);
+                //JsonValue dati = RestScli.ArtIdp(id_sess, idp, sizeImg);
+                //if (dati != null) {
+                //    //JsonValue dati = jsonArt["articolo"];
+                //    String foto = dati["foto"];
+                //    long foto_len = dati["foto_len"];
+                //    if (foto != "")
+                //    {
+                //        foto = foto.Replace("../", "");
+
+                //        bool scarica = false;                        
+                        
+
+                //        string filename = System.IO.Path.Combine(cacheDir, prefixFoto + idp + "_" + sizeImg + ".jpg");
+                //        if (File.Exists(filename))
+                //        {
+                //            long file_len = new System.IO.FileInfo(filename).Length;
+                //            if (foto_len != file_len)
+                //            {
+                //                scarica = true;
+                //            }
+                //            else
+                //            {
+                //                imageBytes = File.ReadAllBytes(filename);
+                //            }
+                //        } else scarica = true;
+
+                //        if (scarica)
+                //        {
+                //            imageBytes = RestScli.ArtFoto(foto);
+                //            File.WriteAllBytes(filename, imageBytes);
+                //        }
+                //    }
+                //}
             }
             catch
             {
