@@ -17,6 +17,7 @@ namespace b2bApp
     {
         String id_sess = "";
         List<Tuple<string, string, string, string>> ordini = new List<Tuple<string, string, string, string>>();
+        GestToolbar menuToolbar = new GestToolbar();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -49,6 +50,8 @@ namespace b2bApp
             ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
             listView.Adapter = new ActivityListItem_Adapter(this, ordini);
             listView.ItemClick += OnListItemClick;  // to be defined
+            
+            menuToolbar.creaToolbar(this, id_sess);
         }
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -64,27 +67,13 @@ namespace b2bApp
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.top_menus, menu);
+            MenuInflater.Inflate(Resource.Menu.upper_menus, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if ( item.ItemId==Resource.Id.menu_cart )
-            {
-                Intent intent = new Intent(this, typeof(CartActivity));
-                intent.PutExtra("id_sess", id_sess);
-                StartActivity(intent);
-            }
-            if (item.ItemId == Resource.Id.menu_cerca)
-            {
-                Intent intent = new Intent(this, typeof(CatActivity));
-                intent.SetFlags(ActivityFlags.ClearTask);
-                intent.PutExtra("id_sess", id_sess);
-                intent.PutExtra("cat_padre", "0");
-                intent.PutExtra("path", "Ricerca articoli");
-                StartActivity(intent);
-            }
+            menuToolbar.UpperToolBar(this, item);
             return base.OnOptionsItemSelected(item);
         }
 

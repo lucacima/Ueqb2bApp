@@ -99,14 +99,21 @@ namespace b2bApp
                         ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
                         objArt.PrendiCategorie(id_sess);
                         objArt.EliminaCacheArticoli();
+                        // Elimino cache elenco ordini
+                        OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+                        objOrdini.EliminaCache();
 
                         Intent intent = new Intent(this, typeof(OrdActivity));
                         intent.PutExtra("id_sess", id_sess);
                         //intent.PutExtra("cat_padre", "0");
                         //intent.PutExtra("path", "Ricerca articoli");
                         StartActivity(intent);
+                        this.Finish();
 
-                        this.Finish();                            
+                        // Faccio un pre-caricamenteo degli articoli con categoria 0
+                        objArt.ElencoArticoli(id_sess, "0");
+
+
                     }
                     else
                     {

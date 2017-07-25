@@ -20,21 +20,30 @@ namespace b2bApp
         List<Tuple<string, string, string, int>> items = new List<Tuple<string, string, string, int>>();
         List<Tuple<string, string, string, int>> items_all = new List<Tuple<string, string, string, int>>();
         String path = "";
+        GestToolbar menuToolbar = new GestToolbar();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // loads the HomeScreen.axml as this activity's view
-
             id_sess = Intent.Extras.GetString("id_sess");
             String cat_padre = Intent.Extras.GetString("cat_padre");
             path= Intent.Extras.GetString("path");
 
-            if ( cat_padre!="0")
+            if ( cat_padre!="")
             {
                 SetContentView(Resource.Layout.ricerca);
-            } else
+
+                ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
+                listView.ItemClick += OnListItemClick;  // to be defined
+
+                ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+
+                // Categorie
+                cats = objArt.ElencoCategorie(cat_padre);
+                CercaArticoli(cat_padre);
+            }
+            else
             {
                 SetContentView(Resource.Layout.categorie);
 
@@ -44,37 +53,35 @@ namespace b2bApp
                 btCerca.Click += (object sender, EventArgs e) =>
                 {
                     if (etCerca.Text.Length == 0) return;
+                    btCerca.Enabled = false;
 
                     Intent intent = new Intent(this, typeof(RicercaActivity));
                     intent.PutExtra("id_sess", id_sess);
                     intent.PutExtra("keyword", etCerca.Text);
                     StartActivity(intent);
+
+                    btCerca.Enabled = true;
+                };
+
+                Button btNaviga = FindViewById<Button>(Resource.Id.btNaviga);
+                btNaviga.Click += (object sender, EventArgs e) =>
+                {
+                    btNaviga.Enabled = false;
+
+                    Intent intent = new Intent(this, typeof(CatActivity));
+                    intent.PutExtra("id_sess", id_sess);
+                    intent.PutExtra("cat_padre", "0");
+                    intent.PutExtra("path", "Categorie articoli");
+                    StartActivity(intent);
+
+                    btNaviga.Enabled = true;
                 };
             }
-
-            ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
-            listView.ItemClick += OnListItemClick;  // to be defined
-
-            this.Title = path;
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
             ActionBar.Title = path;
-
-            ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-
-            // Categorie
-            cats = objArt.ElencoCategorie(cat_padre);
-            CercaArticoli(cat_padre);
-
-            //Articoli
-            //if (cats.Count == 0)
-            //{
-            //    CercaArticoli(cat_padre);
-            //} else
-            //{
-            //    listView.Adapter = new ActivityListItem_Adapter(this, cats);
-            //}
-
+            
+            menuToolbar.creaToolbar(this, id_sess);
         }
 
         public async Task<int> CercaArticoli(String cat_padre)
@@ -150,27 +157,14 @@ namespace b2bApp
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.top_menus, menu);
+            MenuInflater.Inflate(Resource.Menu.upper_menus, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if ( item.ItemId==Resource.Id.menu_cart )
-            {
-                Intent intent = new Intent(this, typeof(CartActivity));
-                intent.PutExtra("id_sess", id_sess);
-                StartActivity(intent);
-            }
-            if (item.ItemId == Resource.Id.menu_cerca)
-            {
-                Intent intent = new Intent(this, typeof(CatActivity));
-                intent.SetFlags(ActivityFlags.ClearTask);
-                intent.PutExtra("id_sess", id_sess);
-                intent.PutExtra("cat_padre", "0");
-                intent.PutExtra("path", "Ricerca articoli");
-                StartActivity(intent);
-            }
+
+            menuToolbar.UpperToolBar(this, item);
             return base.OnOptionsItemSelected(item);
         }
 

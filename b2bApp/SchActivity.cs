@@ -32,6 +32,7 @@ namespace b2bApp
         float sconto = 0;
         float aliva = 22;
         int riga_cart = 0;
+        GestToolbar menuToolbar = new GestToolbar();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -83,8 +84,6 @@ namespace b2bApp
                 btAggiungi.Enabled = false;
                 if ( etQta.Text!="" )
                 {
-                    
-
                     if (riga_cart == 0)
                     {
                         objCart.AggiungiCarrello(idp, codice, nome, etQta.Text, prezzo, sconto, aliva, etNote.Text);
@@ -144,17 +143,19 @@ namespace b2bApp
 
 
             FotoArticolo();
+
+            menuToolbar.creaToolbar(this, id_sess);
         }
 
         public async Task<int> FotoArticolo()
         { 
             Bitmap articolo = null;
-            /*
+            
             ProgressDialog dialog = new ProgressDialog(this);
-            dialog.SetMessage("Caricamento foto....");
-            dialog.SetCancelable(false);
+            //dialog.SetMessage("Caricamento foto....");
+            dialog.SetCancelable(true);
             dialog.Show();
-            */
+            
             try
             {
                 var res = await Task.Run(() =>
@@ -179,9 +180,21 @@ namespace b2bApp
                 ;
             }
 
-            //dialog.Dismiss();
+            dialog.Dismiss();
 
             return 0;
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.upper_menus, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            menuToolbar.UpperToolBar(this, item);
+            return base.OnOptionsItemSelected(item);
         }
     }
 }

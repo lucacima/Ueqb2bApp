@@ -11,7 +11,8 @@
   
   <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="0dp"
+    android:layout_weight="1">
 
     <LinearLayout
     android:id="@+id/parentContainer"
@@ -28,28 +29,28 @@
             android:id="@+id/schFoto"
         />
       <TextView
-          android:text="Codice"
+          android:text="@string/Codice"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:id="@+id/tvCodice"
           android:layout_gravity="center_vertical" />
       <TextView
-          android:text="Prezzo"
+          android:text="@string/Prezzo"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:id="@+id/tvPrezzo"
           android:layout_gravity="center_vertical" />      
       <TextView
-          android:text="Descrizione"
+          android:text="@string/Descrizione"
           android:textAppearance="?android:attr/textAppearanceSmall"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:id="@+id/tvDescr"
           android:layout_gravity="center_vertical" />
       <TextView
-          android:text="Qta"
+          android:text="@string/Qta"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -62,7 +63,7 @@
           android:layout_gravity="left"
       />      
       <TextView
-          android:text="Note"
+          android:text="@string/Note"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -74,17 +75,24 @@
           android:lines="3"
           android:id="@+id/etNote" />
       <Button
-          android:text="Aggiungi al carrello"
+          android:text="@string/Aggiungi_al_carrello"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:id="@+id/btAggCarrello" />
       <Button
-          android:text="Elimina"
+          android:text="@string/Elimina_dal_carrello"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:visibility="invisible"
           android:background="#ffff0000"
-          android:id="@+id/btEliCarrello" />
+          android:id="@+id/btEliCarrello" />    
     </LinearLayout>
-  </ScrollView> 
+  </ScrollView>
+  <Toolbar
+      android:id="@+id/edit_toolbar"
+      android:minHeight="?android:attr/actionBarSize"
+      android:background="?android:attr/colorAccent"
+      android:theme="@android:style/ThemeOverlay.Material.Dark.ActionBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
 </LinearLayout>

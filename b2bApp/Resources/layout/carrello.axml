@@ -22,7 +22,7 @@
        android:paddingLeft="2dip" >
     
     <TextView
-          android:text="Totale:"
+          android:text="@string/Totale"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:textAlignment="center"
@@ -30,7 +30,7 @@
           android:id="@+id/tvTot" />
   
     <TextView
-        android:text="Note"
+        android:text="@string/Note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvNote" />  
@@ -41,9 +41,17 @@
       android:id="@+id/etNote" />
     
     <Button
-        android:text="Invia ordine"
+        android:text="@string/Invia_ordine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btOrdine" />
   </LinearLayout>
+
+  <Toolbar
+      android:id="@+id/edit_toolbar"
+      android:minHeight="?android:attr/actionBarSize"
+      android:background="?android:attr/colorAccent"
+      android:theme="@android:style/ThemeOverlay.Material.Dark.ActionBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
 </LinearLayout>

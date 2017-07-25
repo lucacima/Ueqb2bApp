@@ -15,6 +15,7 @@ namespace b2bApp
         String id_sess = "";
         List<Tuple<string, string, int, float, int, int, string>> carts;
         clsCart objCart;
+        GestToolbar menuToolbar = new GestToolbar();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -35,12 +36,16 @@ namespace b2bApp
             Button btOrdine = FindViewById<Button>(Resource.Id.btOrdine);
             btOrdine.Click += (object sender, EventArgs e) =>
             {
+                btOrdine.Enabled = false;
+
                 // Controlli                 
                 int id_ord = objCart.InviaOrdine(etNote.Text);
 
                 Toast.MakeText(this, "Ordine n." + id_ord.ToString() +" creato correttamente", Android.Widget.ToastLength.Short).Show();
                 //Messaggio dopo
                 this.Finish();
+
+                btOrdine.Enabled = true;
             };
 
             carts = objCart.ListaCarrello();
@@ -58,6 +63,8 @@ namespace b2bApp
                 etNote.Visibility = ViewStates.Invisible;
                 tvTot.Visibility = ViewStates.Invisible;
             }
+            
+            menuToolbar.creaToolbar(this, id_sess);
         }
 
 
@@ -71,25 +78,16 @@ namespace b2bApp
             StartActivity(intent);
             this.Finish();
         }
-  
+
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.top_menus, menu);
+            MenuInflater.Inflate(Resource.Menu.upper_menus, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if (item.ItemId == Resource.Id.menu_cerca)
-            {
-                Intent intent = new Intent(this, typeof(CatActivity));
-                intent.SetFlags(ActivityFlags.ClearTask);
-                intent.PutExtra("id_sess", id_sess);
-                intent.PutExtra("cat_padre", "0");
-                intent.PutExtra("path", "Ricerca articoli");
-                StartActivity(intent);
-                this.Finish();
-            }
+            menuToolbar.UpperToolBar(this, item);
             return base.OnOptionsItemSelected(item);
         }
 

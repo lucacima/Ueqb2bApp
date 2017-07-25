@@ -48,19 +48,28 @@ namespace b2bApp
 			public const int cart = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int cavallo = 2130837505;
+			public const int categorie = 2130837505;
 			
 			// aapt resource value: 0x7f020002
-			public const int freccia = 2130837506;
+			public const int cavallo = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int ic_find_in_page_black_24dp = 2130837507;
+			public const int freccia = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int ic_shopping_cart_black_24dp = 2130837508;
+			public const int ic_find_in_page_black_24dp = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int Icon = 2130837509;
+			public const int ic_folder_black_24dp = 2130837509;
+			
+			// aapt resource value: 0x7f020006
+			public const int ic_library_books_black_24dp = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int ic_shopping_cart_black_24dp = 2130837511;
+			
+			// aapt resource value: 0x7f020008
+			public const int Icon = 2130837512;
 			
 			static Drawable()
 			{
@@ -78,116 +87,128 @@ namespace b2bApp
 			// aapt resource value: 0x7f070001
 			public const int List = 2131165185;
 			
-			// aapt resource value: 0x7f070023
-			public const int btAggCarrello = 2131165219;
+			// aapt resource value: 0x7f070025
+			public const int btAggCarrello = 2131165221;
 			
-			// aapt resource value: 0x7f070009
-			public const int btCerca = 2131165193;
+			// aapt resource value: 0x7f07000a
+			public const int btCerca = 2131165194;
 			
-			// aapt resource value: 0x7f070024
-			public const int btEliCarrello = 2131165220;
+			// aapt resource value: 0x7f070026
+			public const int btEliCarrello = 2131165222;
 			
-			// aapt resource value: 0x7f070014
-			public const int btEntra = 2131165204;
+			// aapt resource value: 0x7f070016
+			public const int btEntra = 2131165206;
+			
+			// aapt resource value: 0x7f07000b
+			public const int btNaviga = 2131165195;
 			
 			// aapt resource value: 0x7f070006
 			public const int btOrdine = 2131165190;
 			
-			// aapt resource value: 0x7f070016
-			public const int codice_cart = 2131165206;
+			// aapt resource value: 0x7f070018
+			public const int codice_cart = 2131165208;
 			
-			// aapt resource value: 0x7f070008
-			public const int etCerca = 2131165192;
+			// aapt resource value: 0x7f070007
+			public const int edit_toolbar = 2131165191;
+			
+			// aapt resource value: 0x7f070009
+			public const int etCerca = 2131165193;
 			
 			// aapt resource value: 0x7f070005
 			public const int etNote = 2131165189;
 			
+			// aapt resource value: 0x7f070015
+			public const int etPassword = 2131165205;
+			
+			// aapt resource value: 0x7f070024
+			public const int etQta = 2131165220;
+			
 			// aapt resource value: 0x7f070013
-			public const int etPassword = 2131165203;
+			public const int etUtente = 2131165203;
 			
-			// aapt resource value: 0x7f070022
-			public const int etQta = 2131165218;
-			
-			// aapt resource value: 0x7f070011
-			public const int etUtente = 2131165201;
-			
-			// aapt resource value: 0x7f07001d
-			public const int imp_cart = 2131165213;
+			// aapt resource value: 0x7f07001f
+			public const int imp_cart = 2131165215;
 			
 			// aapt resource value: 0x7f070002
 			public const int invia_ordine = 2131165186;
 			
-			// aapt resource value: 0x7f07001c
-			public const int iva_cart = 2131165212;
+			// aapt resource value: 0x7f07001e
+			public const int iva_cart = 2131165214;
 			
-			// aapt resource value: 0x7f070026
-			public const int menu_cart = 2131165222;
+			// aapt resource value: 0x7f070029
+			public const int menu_cart = 2131165225;
 			
-			// aapt resource value: 0x7f070025
-			public const int menu_cerca = 2131165221;
+			// aapt resource value: 0x7f070028
+			public const int menu_cerca = 2131165224;
 			
-			// aapt resource value: 0x7f070018
-			public const int nome_cart = 2131165208;
+			// aapt resource value: 0x7f07002a
+			public const int menu_esci = 2131165226;
 			
-			// aapt resource value: 0x7f070019
-			public const int note_cart = 2131165209;
-			
-			// aapt resource value: 0x7f070007
-			public const int parentContainer = 2131165191;
-			
-			// aapt resource value: 0x7f07001b
-			public const int prz_cart = 2131165211;
+			// aapt resource value: 0x7f070027
+			public const int menu_ordini = 2131165223;
 			
 			// aapt resource value: 0x7f07001a
-			public const int qta_cart = 2131165210;
+			public const int nome_cart = 2131165210;
 			
-			// aapt resource value: 0x7f070017
-			public const int riga_cart = 2131165207;
+			// aapt resource value: 0x7f07001b
+			public const int note_cart = 2131165211;
 			
-			// aapt resource value: 0x7f07001e
-			public const int schFoto = 2131165214;
+			// aapt resource value: 0x7f070008
+			public const int parentContainer = 2131165192;
 			
-			// aapt resource value: 0x7f070010
-			public const int textView1 = 2131165200;
+			// aapt resource value: 0x7f07001d
+			public const int prz_cart = 2131165213;
+			
+			// aapt resource value: 0x7f07001c
+			public const int qta_cart = 2131165212;
+			
+			// aapt resource value: 0x7f070019
+			public const int riga_cart = 2131165209;
+			
+			// aapt resource value: 0x7f070020
+			public const int schFoto = 2131165216;
 			
 			// aapt resource value: 0x7f070012
-			public const int textView2 = 2131165202;
+			public const int textView1 = 2131165202;
+			
+			// aapt resource value: 0x7f070014
+			public const int textView2 = 2131165204;
 			
 			// aapt resource value: 0x7f070000
 			public const int toolbar = 2131165184;
 			
-			// aapt resource value: 0x7f070015
-			public const int tvBenvenuto = 2131165205;
+			// aapt resource value: 0x7f070017
+			public const int tvBenvenuto = 2131165207;
 			
-			// aapt resource value: 0x7f07000a
-			public const int tvCodArt = 2131165194;
-			
-			// aapt resource value: 0x7f07001f
-			public const int tvCodice = 2131165215;
-			
-			// aapt resource value: 0x7f07000e
-			public const int tvDDoc = 2131165198;
-			
-			// aapt resource value: 0x7f07000b
-			public const int tvDesArt = 2131165195;
+			// aapt resource value: 0x7f07000c
+			public const int tvCodArt = 2131165196;
 			
 			// aapt resource value: 0x7f070021
-			public const int tvDescr = 2131165217;
+			public const int tvCodice = 2131165217;
+			
+			// aapt resource value: 0x7f070010
+			public const int tvDDoc = 2131165200;
 			
 			// aapt resource value: 0x7f07000d
-			public const int tvImp = 2131165197;
+			public const int tvDesArt = 2131165197;
+			
+			// aapt resource value: 0x7f070023
+			public const int tvDescr = 2131165219;
 			
 			// aapt resource value: 0x7f07000f
-			public const int tvNDoc = 2131165199;
+			public const int tvImp = 2131165199;
+			
+			// aapt resource value: 0x7f070011
+			public const int tvNDoc = 2131165201;
 			
 			// aapt resource value: 0x7f070004
 			public const int tvNote = 2131165188;
 			
-			// aapt resource value: 0x7f070020
-			public const int tvPrezzo = 2131165216;
+			// aapt resource value: 0x7f070022
+			public const int tvPrezzo = 2131165218;
 			
-			// aapt resource value: 0x7f07000c
-			public const int tvQta = 2131165196;
+			// aapt resource value: 0x7f07000e
+			public const int tvQta = 2131165198;
 			
 			// aapt resource value: 0x7f070003
 			public const int tvTot = 2131165187;
@@ -257,6 +278,9 @@ namespace b2bApp
 			// aapt resource value: 0x7f060000
 			public const int top_menus = 2131099648;
 			
+			// aapt resource value: 0x7f060001
+			public const int upper_menus = 2131099649;
+			
 			static Menu()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -270,14 +294,101 @@ namespace b2bApp
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int ApplicationName = 2130968577;
+			// aapt resource value: 0x7f040019
+			public const int Accesso_in_corso = 2130968601;
+			
+			// aapt resource value: 0x7f040011
+			public const int Aggiungi_al_carrello = 2130968593;
 			
 			// aapt resource value: 0x7f040000
-			public const int Hello = 2130968576;
+			public const int ApplicationName = 2130968576;
+			
+			// aapt resource value: 0x7f040015
+			public const int Carrello = 2130968597;
+			
+			// aapt resource value: 0x7f040014
+			public const int Cerca = 2130968596;
+			
+			// aapt resource value: 0x7f04000e
+			public const int Codice = 2130968590;
+			
+			// aapt resource value: 0x7f04000a
+			public const int Data = 2130968586;
+			
+			// aapt resource value: 0x7f040010
+			public const int Descrizione = 2130968592;
+			
+			// aapt resource value: 0x7f040012
+			public const int Elimina_dal_carrello = 2130968594;
+			
+			// aapt resource value: 0x7f040004
+			public const int Entra = 2130968580;
+			
+			// aapt resource value: 0x7f04001d
+			public const int ErrLogin1 = 2130968605;
+			
+			// aapt resource value: 0x7f04001e
+			public const int ErrLogin2 = 2130968606;
+			
+			// aapt resource value: 0x7f04001f
+			public const int ErrQta = 2130968607;
+			
+			// aapt resource value: 0x7f04001c
+			public const int Esci = 2130968604;
+			
+			// aapt resource value: 0x7f04000d
+			public const int Importo = 2130968589;
+			
+			// aapt resource value: 0x7f040007
+			public const int Invia_ordine = 2130968583;
+			
+			// aapt resource value: 0x7f040009
+			public const int Naviga_categorie = 2130968585;
+			
+			// aapt resource value: 0x7f040006
+			public const int Note = 2130968582;
+			
+			// aapt resource value: 0x7f04000b
+			public const int Num = 2130968587;
+			
+			// aapt resource value: 0x7f040016
+			public const int Ordine_creato = 2130968598;
+			
+			// aapt resource value: 0x7f040018
+			public const int Ordine_n = 2130968600;
+			
+			// aapt resource value: 0x7f040013
+			public const int Ordini = 2130968595;
+			
+			// aapt resource value: 0x7f040003
+			public const int Password = 2130968579;
+			
+			// aapt resource value: 0x7f04000f
+			public const int Prezzo = 2130968591;
+			
+			// aapt resource value: 0x7f04000c
+			public const int Qta = 2130968588;
+			
+			// aapt resource value: 0x7f040008
+			public const int Ricerca = 2130968584;
+			
+			// aapt resource value: 0x7f040017
+			public const int Ricerca_in_corso = 2130968599;
+			
+			// aapt resource value: 0x7f04001b
+			public const int Risultato_ricerca = 2130968603;
+			
+			// aapt resource value: 0x7f040001
+			public const int Titolo = 2130968577;
+			
+			// aapt resource value: 0x7f040005
+			public const int Totale = 2130968581;
+			
+			// aapt resource value: 0x7f04001a
+			public const int Ultimi_ordini = 2130968602;
 			
 			// aapt resource value: 0x7f040002
-			public const int Titolo = 2130968578;
+			public const int Utente = 2130968578;
 			
 			static String()
 			{

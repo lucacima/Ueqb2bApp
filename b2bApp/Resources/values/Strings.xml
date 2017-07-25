@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
     <string name="ApplicationName">b2bApp</string>
     <string name="Titolo">Umbria equitazione</string>
+    <string name="Utente">Utente</string>
+    <string name="Password">Password</string>
+    <string name="Entra">Entra</string>
+    <string name="Totale">Totale:</string>
+    <string name="Note">Note</string>
+    <string name="Invia_ordine">Invia ordine</string>
+    <string name="Ricerca">Ricerca</string>
+    <string name="Naviga_categorie">Naviga categorie</string>
+    <string name="Data">Data</string>
+    <string name="Num">Num</string>
+    <string name="Qta">Qta</string>
+    <string name="Importo">Importo</string>
+    <string name="Codice">Codice</string>
+    <string name="Prezzo">Prezzo</string>
+    <string name="Descrizione">Descrizione</string>
+    <string name="Aggiungi_al_carrello">Aggiungi al carrello</string>
+    <string name="Elimina_dal_carrello">Elimina dal carrello</string>
+    <string name="Ordini">Ordini</string>
+    <string name="Cerca">Cerca</string>
+    <string name="Carrello">Carrello</string>
+    <string name="Ordine_creato">Ordine creato correttamente</string>
+    <string name="Ricerca_in_corso">Ricerca in corso...</string>
+    <string name="Ordine_n">Ordine n.</string>
+    <string name="Accesso_in_corso">Accesso in corso...</string>
+    <string name="Ultimi_ordini">Ultimi ordini</string>
+    <string name="Risultato_ricerca">Risultato ricerca</string>
+    <string name="Esci">Esci</string>
+    <string name="ErrLogin1">Utente o password non validi</string>
+    <string name="ErrLogin2">Errore in fase di autenticazione</string>
+    <string name="ErrQta">Specificare la quantità</string>
 </resources>

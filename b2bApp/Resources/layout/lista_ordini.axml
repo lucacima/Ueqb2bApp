@@ -13,7 +13,7 @@
       android:layout_gravity="left"
       android:textSize="14dip"            
       android:paddingRight="2dip"
-      android:text="Data" />
+      android:text="@string/Data" />
   <TextView android:id="@+id/tvNDoc"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
       android:layout_gravity="right"
       android:textSize="14dip"
       android:paddingRight="2dip" 
-      android:text="Num" />
+      android:text="@string/Num" />
   <TextView android:id="@+id/tvQta"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
       android:layout_gravity="right"
       android:textSize="14dip"
       android:paddingRight="2dip"
-      android:text="Qta" />
+      android:text="@string/Qta" />
   <TextView android:id="@+id/tvImp"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
       android:layout_gravity="right"
       android:textSize="14dip"
       android:paddingRight="2dip" 
-      android:text="Importo" />
+      android:text="@string/Importo" />
 
 
 

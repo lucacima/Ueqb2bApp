@@ -14,12 +14,34 @@
       android:layout_height="wrap_content"
       android:id="@+id/etCerca" />
   <Button
-      android:text="Ricerca"
+      android:text="@string/Ricerca"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:id="@+id/btCerca" />
-  <ListView android:id="@+id/List"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-    />
+
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="0dp"
+    android:paddingTop="100dp"
+    android:layout_weight="1">
+
+    <Button
+     android:text="@string/Naviga_categorie"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:drawableLeft="@drawable/categorie"
+     android:textColor="#ffffff"
+     android:padding="6dp"
+     android:id="@+id/btNaviga" />
+  </LinearLayout>
+ 
+
+  <Toolbar
+      android:id="@+id/edit_toolbar"
+      android:minHeight="?android:attr/actionBarSize"
+      android:background="?android:attr/colorAccent"
+      android:theme="@android:style/ThemeOverlay.Material.Dark.ActionBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
 </LinearLayout>

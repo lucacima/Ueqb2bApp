@@ -2,26 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Json;
-
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using System.IO;
 
 namespace b2bApp
 {
     class OrdiniClass
     {
         String cacheDir = "";
-
+        String filename = "";
 
         public OrdiniClass(String cacheDir)
         {
             this.cacheDir = cacheDir;
+            filename = System.IO.Path.Combine(cacheDir, "b2bAppCacheO.json");
+        }
+
+        public bool EliminaCache()
+        {
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            return true;
+
         }
 
         public List<Tuple<string, string, string, string>> ElencoOrdini(String id_sess)
@@ -30,8 +33,18 @@ namespace b2bApp
 
             try
             {
-                clsRestCli RestScli = new clsRestCli(cacheDir);
-                JsonArray ordArray = RestScli.SitOrdini(id_sess);
+                JsonArray ordArray = new JsonArray();
+                if (File.Exists(filename))
+                {
+                    String ordini = File.ReadAllText(filename);
+                    ordArray = (JsonArray)JsonArray.Parse(ordini);
+                }
+                else
+                {
+                    clsRestCli RestScli = new clsRestCli(cacheDir);
+                    ordArray = RestScli.SitOrdini(id_sess);
+                    File.WriteAllText(filename, ordArray.ToString());
+                }
 
                 for (int i = 0; i < ordArray.Count(); i++)
                 {

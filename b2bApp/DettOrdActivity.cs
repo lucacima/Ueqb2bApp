@@ -20,6 +20,7 @@ namespace b2bApp
         String data_ord = "";
 
         List<Tuple<string, string, string, string>> ordini = new List<Tuple<string, string, string, string>>();
+        GestToolbar menuToolbar = new GestToolbar();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,7 +41,7 @@ namespace b2bApp
 
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
-            ActionBar.Title = "Ordine n." + num_ord + " del "+ data_ord;
+            ActionBar.Title = "Ordine n." + num_ord + " - "+ data_ord;
 
             OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
 
@@ -52,8 +53,21 @@ namespace b2bApp
 
             ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
             listView.Adapter = new ActivityListItem_Adapter(this, ordini);
+
+            menuToolbar.creaToolbar(this, id_sess);
         }
 
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.upper_menus, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            menuToolbar.UpperToolBar(this, item);
+            return base.OnOptionsItemSelected(item);
+        }
 
         public class ActivityListItem_Adapter : ArrayAdapter<Tuple<string, string, string, string>>
         {

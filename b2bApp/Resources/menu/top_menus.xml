@@ -1,13 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
+       android:id="@+id/menu_ordini"
+       android:icon="@drawable/ic_library_books_black_24dp"
+       android:showAsAction="ifRoom"
+       android:title="@string/Ordini" />
+  <item
        android:id="@+id/menu_cerca"
        android:icon="@drawable/ic_find_in_page_black_24dp"
        android:showAsAction="ifRoom"
-       android:title="Cerca" />
+       android:title="@string/Cerca" />
   <item
        android:id="@+id/menu_cart"
        android:icon="@drawable/ic_shopping_cart_black_24dp"
        android:showAsAction="ifRoom"
-       android:title="Carrello" />
+       android:title="@string/Carrello" />
 </menu>

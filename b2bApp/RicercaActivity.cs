@@ -17,6 +17,7 @@ namespace b2bApp
     {
         String id_sess = "";
         List<Tuple<string,string, string, int>> items= new List<Tuple<string, string, string, int>>();
+        GestToolbar menuToolbar = new GestToolbar();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -36,6 +37,8 @@ namespace b2bApp
             ActionBar.Title = "Risultato ricerca";
 
             CercaArticoli(keyword);
+
+            menuToolbar.creaToolbar(this, id_sess);
         }
 
         public async Task<int> CercaArticoli(String keyword)
@@ -79,27 +82,13 @@ namespace b2bApp
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.top_menus, menu);
+            MenuInflater.Inflate(Resource.Menu.upper_menus, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if ( item.ItemId==Resource.Id.menu_cart )
-            {
-                Intent intent = new Intent(this, typeof(CartActivity));
-                intent.PutExtra("id_sess", id_sess);
-                StartActivity(intent);
-            }
-            if (item.ItemId == Resource.Id.menu_cerca)
-            {
-                Intent intent = new Intent(this, typeof(CatActivity));
-                intent.SetFlags(ActivityFlags.ClearTask);
-                intent.PutExtra("id_sess", id_sess);
-                intent.PutExtra("cat_padre", "0");
-                intent.PutExtra("path", "Ricerca articoli");
-                StartActivity(intent);
-            }
+            menuToolbar.UpperToolBar(this, item);
             return base.OnOptionsItemSelected(item);
         }
 
