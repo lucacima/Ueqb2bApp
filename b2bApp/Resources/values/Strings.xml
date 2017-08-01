@@ -10,6 +10,7 @@
     <string name="Invia_ordine">Invia ordine</string>
     <string name="Ricerca">Ricerca</string>
     <string name="Naviga_categorie">Naviga categorie</string>
+    <string name="Categorie_articoli">Categorie articoli</string>
     <string name="Data">Data</string>
     <string name="Num">Num</string>
     <string name="Qta">Qta</string>
@@ -24,7 +25,9 @@
     <string name="Carrello">Carrello</string>
     <string name="Ordine_creato">Ordine creato correttamente</string>
     <string name="Ricerca_in_corso">Ricerca in corso...</string>
+    <string name="Aggiornamento_in_corso">Aggiornamento in corso...</string>
     <string name="Ordine_n">Ordine n.</string>
+    <string name="Dettaglio_ordine">Dettaglio ordine</string>
     <string name="Accesso_in_corso">Accesso in corso...</string>
     <string name="Ultimi_ordini">Ultimi ordini</string>
     <string name="Risultato_ricerca">Risultato ricerca</string>
@@ -32,4 +35,5 @@
     <string name="ErrLogin1">Utente o password non validi</string>
     <string name="ErrLogin2">Errore in fase di autenticazione</string>
     <string name="ErrQta">Specificare la quantità</string>
+
 </resources>

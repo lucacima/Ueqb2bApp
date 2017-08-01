@@ -29,7 +29,7 @@ namespace b2bApp
 
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
-            ActionBar.Title = "Carrello";
+            ActionBar.Title = Resources.GetString(Resource.String.Carrello);
 
             objCart = new clsCart(Application.CacheDir.AbsolutePath, id_sess);
             EditText etNote = FindViewById<EditText>(Resource.Id.etNote);
@@ -41,7 +41,7 @@ namespace b2bApp
                 // Controlli                 
                 int id_ord = objCart.InviaOrdine(etNote.Text);
 
-                Toast.MakeText(this, "Ordine n." + id_ord.ToString() +" creato correttamente", Android.Widget.ToastLength.Short).Show();
+                Toast.MakeText(this, Resources.GetString(Resource.String.Ordine_creato) +  ": " + id_ord.ToString() , Android.Widget.ToastLength.Short).Show();
                 //Messaggio dopo
                 this.Finish();
 

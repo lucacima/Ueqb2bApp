@@ -9,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Views.InputMethods;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace b2bApp
 {
@@ -18,6 +19,7 @@ namespace b2bApp
         String id_sess = "";
         List<Tuple<string,string, string, int>> items= new List<Tuple<string, string, string, int>>();
         GestToolbar menuToolbar = new GestToolbar();
+        ProgressDialog dialog;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -34,41 +36,41 @@ namespace b2bApp
 
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
-            ActionBar.Title = "Risultato ricerca";
+            ActionBar.Title = Resources.GetString(Resource.String.Risultato_ricerca);
 
-            CercaArticoli(keyword);
+            ThreadPool.QueueUserWorkItem(o => Articoli(keyword));
 
             menuToolbar.creaToolbar(this, id_sess);
         }
 
-        public async Task<int> CercaArticoli(String keyword)
+        private void Articoli(String keyword)
         {
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.SetMessage("Ricerca in corso...");
-            dialog.SetCancelable(false);
-            dialog.Show();
+            RunOnUiThread(() =>
+            {
+                dialog = new ProgressDialog(this);
+                dialog.SetMessage(Resources.GetString(Resource.String.Ricerca_in_corso));
+                dialog.SetCancelable(false);
+                dialog.Show();
+            });
 
             try
-            {
-                ListView listView = FindViewById<ListView>(Resource.Id.List);
-
+            {               
                 items.Clear();
                 ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+                items = objArt.RicercaArticoli(id_sess, keyword);
 
-                var res = await Task.Run(() => {
-                    items = objArt.RicercaArticoli(id_sess, keyword);
-                    return true;
+                RunOnUiThread(() =>
+                {
+                    ListView listView = FindViewById<ListView>(Resource.Id.List);
+                    listView.Adapter = new ActivityListItem_Adapter(this, items);
                 });
-
-                listView.Adapter = new ActivityListItem_Adapter(this, items);
-            } catch
+            }
+            catch
             {
                 ;
             }
 
-            dialog.Dismiss();
-
-            return 0;
+            RunOnUiThread(() => dialog.Dismiss());
         }
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)

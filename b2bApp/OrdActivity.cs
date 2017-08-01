@@ -7,8 +7,7 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Android.Views.InputMethods;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace b2bApp
 {
@@ -18,6 +17,7 @@ namespace b2bApp
         String id_sess = "";
         List<Tuple<string, string, string, string>> ordini = new List<Tuple<string, string, string, string>>();
         GestToolbar menuToolbar = new GestToolbar();
+        ProgressDialog dialog;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -33,36 +33,25 @@ namespace b2bApp
             id_sess = Intent.Extras.GetString("id_sess");
             SetContentView(Resource.Layout.ordini);
 
-            clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
-            String ragSoc = objRestCli.InfoCli(id_sess);
 
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
-            ActionBar.Title = "Ultimi ordini";
+            ActionBar.Title = Resources.GetString(Resource.String.Ultimi_ordini);
 
-            OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+            ThreadPool.QueueUserWorkItem(o => getElencoOrdini());
 
-            FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = ragSoc + "\n";
-            
-            ordini= objOrdini.ElencoOrdini(id_sess);
-            ordini.Insert(0, new Tuple<string, string, string, string>("Data", "Num", "Qta", "Imp"));
-
-            ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
-            listView.Adapter = new ActivityListItem_Adapter(this, ordini);
-            listView.ItemClick += OnListItemClick;  // to be defined
-            
             menuToolbar.creaToolbar(this, id_sess);
         }
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            
+
             Intent intent = new Intent(this, typeof(DettOrdActivity));
             intent.PutExtra("id_sess", id_sess);
             intent.PutExtra("data_ord", ordini[e.Position].Item1);
             intent.PutExtra("num_ord", ordini[e.Position].Item2);
 
-            StartActivity(intent);                  
+            StartActivity(intent);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -105,6 +94,41 @@ namespace b2bApp
             outState.PutString("id_sess", id_sess);
 
             base.OnSaveInstanceState(outState);
+        }
+
+        private void getElencoOrdini()
+        {
+            try
+            {                
+                RunOnUiThread(() =>
+                {                    
+                    dialog = new ProgressDialog(this);
+                    dialog.SetMessage(Resources.GetString(Resource.String.Aggiornamento_in_corso));
+                    dialog.SetCancelable(false);
+                    dialog.Show();
+                });
+
+                clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
+                String ragSoc = objRestCli.InfoCli(id_sess);
+                RunOnUiThread(() => { FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = ragSoc + "\n"; });
+
+                OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+                ordini = objOrdini.ElencoOrdini(id_sess);
+                ordini.Insert(0, new Tuple<string, string, string, string>(Resources.GetString(Resource.String.Data), Resources.GetString(Resource.String.Num), Resources.GetString(Resource.String.Qta), Resources.GetString(Resource.String.Importo)));
+
+                RunOnUiThread(() =>
+                {
+                    ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
+                    listView.Adapter = new ActivityListItem_Adapter(this, ordini);
+                    listView.ItemClick += OnListItemClick;
+
+                    dialog.Dismiss();
+                });
+
+            } catch
+            {
+
+            }
         }
     }
 }

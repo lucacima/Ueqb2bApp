@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-using System.Net;
 using System.Json;
 using Android.Graphics;
-using System.IO;
-using System.Threading.Tasks;
-
+using System.Threading;
 
 namespace b2bApp
 {
@@ -33,6 +26,7 @@ namespace b2bApp
         float aliva = 22;
         int riga_cart = 0;
         GestToolbar menuToolbar = new GestToolbar();
+        ProgressDialog dialog;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -98,7 +92,7 @@ namespace b2bApp
                     this.Finish();
                 } else
                 {
-                    Toast.MakeText(this, "Specificare la quantità", Android.Widget.ToastLength.Short).Show();
+                    Toast.MakeText(this, Resources.GetString(Resource.String.ErrQta), Android.Widget.ToastLength.Short).Show();
                 }
                 btAggiungi.Enabled = true;
             };
@@ -137,52 +131,52 @@ namespace b2bApp
 
                 ActionBar.Title = nome;
                 tvCodice.Text = "Codice: " + codice;
-                tvPrezzo.Text = String.Format("Prezzo: {0:N2} (Sc. {1:N0}%)", prezzo, sconto); // "Prezzo: " +  Prezzo + " (Sc. " + Sconto + "%)";
+                tvPrezzo.Text = String.Format(Resources.GetString(Resource.String.Prezzo) + ": {0:N2} (-{1:N0}%)", prezzo, sconto); 
                 tvDescr.Text = descrizione;
             }
 
-
-            FotoArticolo();
+            ThreadPool.QueueUserWorkItem(o => caricaFoto());
 
             menuToolbar.creaToolbar(this, id_sess);
         }
 
-        public async Task<int> FotoArticolo()
-        { 
-            Bitmap articolo = null;
-            
-            ProgressDialog dialog = new ProgressDialog(this);
-            //dialog.SetMessage("Caricamento foto....");
-            dialog.SetCancelable(true);
-            dialog.Show();
-            
+        private void caricaFoto()
+        {
+            Bitmap articolo = null;            
+
+            RunOnUiThread(() =>
+            {
+                dialog = new ProgressDialog(this);
+
+                dialog.SetMessage(Resources.GetString(Resource.String.Aggiornamento_in_corso));
+                dialog.SetCancelable(true);
+                dialog.Show();
+            });
+
             try
             {
-                var res = await Task.Run(() =>
+                ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+                byte[] imageBytes = objArt.Articolo(id_sess, idp, sizeImg);
+                if (imageBytes != null && imageBytes.Length > 0)
                 {
-                    ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-                    byte[] imageBytes = objArt.Articolo(id_sess, idp, sizeImg);
-                    if (imageBytes != null && imageBytes.Length > 0)
-                    {
-                        articolo = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                    articolo = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
 
-                    }
-                    return 0;
-                });
-
-                if ( articolo!=null)
-                {
-                    ImageView ivfoto = FindViewById<ImageView>(Resource.Id.schFoto);
-                    ivfoto.SetImageBitmap(articolo);
                 }
-            } catch
+                if (articolo != null)
+                {
+                    RunOnUiThread(() =>
+                    {
+                        ImageView ivfoto = FindViewById<ImageView>(Resource.Id.schFoto);
+                        ivfoto.SetImageBitmap(articolo);
+                    });
+                }
+            }
+            catch
             {
                 ;
             }
 
-            dialog.Dismiss();
-
-            return 0;
+            RunOnUiThread(() => dialog.Dismiss());
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

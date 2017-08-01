@@ -3,7 +3,7 @@ using Android.App;
 using Android.Widget;
 using Android.OS;
 using Android.Content;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace b2bApp
 {
@@ -31,119 +31,72 @@ namespace b2bApp
 
             btEntra.Click += (object sender, EventArgs e) =>
             {
-                btEntra.Enabled = false;
-                dialog = new ProgressDialog(this);
-                dialog.SetMessage("Accesso in corso...");
-                dialog.SetCancelable(false);
-                dialog.Show();
-
-                LoginB2b(etUtente.Text, etPassword.Text);
-
-                //String Error = "";
-                //try
-                //{
-
-                //    clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
-                //    id_sess = objRestCli.Login(etUtente.Text, etPassword.Text);
-                //    if (id_sess != "")
-                //    {
-                //        var res = Task.Run(() =>
-                //        {
-                //            ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-                //            objArt.PrendiCategorie(id_sess);
-                //            objArt.EliminaCacheArticoli();
-
-                //            Intent intent = new Intent(this, typeof(OrdActivity));
-                //            intent.PutExtra("id_sess", id_sess);
-                //            //intent.PutExtra("cat_padre", "0");
-                //            //intent.PutExtra("path", "Ricerca articoli");
-                //            StartActivity(intent);
-
-
-                //            this.Finish();
-
-                //        });
-
-                //    } else
-                //    {
-                //        // Messaggio utente o password errati
-                //        Error = "Utente o password non validi";
-                //    }
-
-                //}
-                //catch
-                //{
-                //    Error = "Errore in fase di autenticazione";
-                //}
-                //dialog.Dismiss();
-                //if (Error != "")
-                //{
-                //    Toast.MakeText(this, Error, Android.Widget.ToastLength.Short).Show();
-                //}                
+                ThreadPool.QueueUserWorkItem(o => Entra(etUtente.Text, etPassword.Text));
             };
 
         }
 
-        public async Task<int> LoginB2b(string utente, string password)
+        private void Entra(string utente, string password)
         {
             String Error = "";
             try
             {
-
-                var res = await Task.Run(() =>
+                RunOnUiThread(() =>
                 {
-                    clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
-                    id_sess = objRestCli.Login(utente, password);
-                    if (id_sess != "")
-                    {
-                        ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-                        objArt.PrendiCategorie(id_sess);
-                        objArt.EliminaCacheArticoli();
-                        // Elimino cache elenco ordini
-                        OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
-                        objOrdini.EliminaCache();
-
-                        Intent intent = new Intent(this, typeof(OrdActivity));
-                        intent.PutExtra("id_sess", id_sess);
-                        //intent.PutExtra("cat_padre", "0");
-                        //intent.PutExtra("path", "Ricerca articoli");
-                        StartActivity(intent);
-                        this.Finish();
-
-                        // Faccio un pre-caricamenteo degli articoli con categoria 0
-                        objArt.ElencoArticoli(id_sess, "0");
-
-
-                    }
-                    else
-                    {
-                        // Messaggio utente o password errati
-                        Error = "Utente o password non validi";
-                    }
-                    return 0;
+                    Button btEntra = FindViewById<Button>(Resource.Id.btEntra);
+                    btEntra.Enabled = false;
+                    dialog = new ProgressDialog(this);
+                    dialog.SetMessage(Resources.GetString(Resource.String.Accesso_in_corso));
+                    dialog.SetCancelable(false);
+                    dialog.Show();
                 });
+
+                clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
+                id_sess = objRestCli.Login(utente, password);
+                if (id_sess != "")
+                {
+                    ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
+                    objArt.PrendiCategorie(id_sess);
+                    objArt.EliminaCacheArticoli();
+                    // Elimino cache elenco ordini
+                    OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+                    objOrdini.EliminaCache();
+
+                    RunOnUiThread(() =>  dialog.Dismiss());
+
+                    Intent intent = new Intent(this, typeof(OrdActivity));
+                    intent.PutExtra("id_sess", id_sess);
+                    StartActivity(intent);
+                    this.Finish();
+
+                    // Faccio un pre-caricamenteo degli articoli con categoria 0
+                    objArt.ElencoArticoli(id_sess, "0");
+
+
+                }
+                else
+                {
+                    // Messaggio utente o password errati
+                    Error = Resources.GetString(Resource.String.ErrLogin1);
+                }
             }
             catch
             {
-                Error = "Errore in fase di autenticazione";
+                Error = Resources.GetString(Resource.String.ErrLogin2);
             }
 
-            if ( Error!="")
+            RunOnUiThread(() =>
             {
-                dialog.SetMessage(Error);
-                dialog.SetCancelable(true);
+                if (Error != "")
+                {
+                    dialog.SetMessage(Error);
+                    dialog.SetCancelable(true);
+                }
 
-
-            } else
-            {
-                dialog.Dismiss();
-            }
-
-            Button btEntra = FindViewById<Button>(Resource.Id.btEntra);
-            btEntra.Enabled = true;
-            return 0;
+                Button btEntra = FindViewById<Button>(Resource.Id.btEntra);
+                btEntra.Enabled = true;
+            });
         }
-
     }
 }
 

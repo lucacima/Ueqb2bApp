@@ -9,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Views.InputMethods;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace b2bApp
 {
@@ -18,6 +19,7 @@ namespace b2bApp
         String id_sess = "";
         String num_ord = "";
         String data_ord = "";
+        ProgressDialog dialog;
 
         List<Tuple<string, string, string, string>> ordini = new List<Tuple<string, string, string, string>>();
         GestToolbar menuToolbar = new GestToolbar();
@@ -41,20 +43,36 @@ namespace b2bApp
 
             var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetActionBar(toolbar);
-            ActionBar.Title = "Ordine n." + num_ord + " - "+ data_ord;
+            ActionBar.Title = Resources.GetString(Resource.String.Ordine_n)+ " " + num_ord + " - "+ data_ord;
 
-            OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+            FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = Resources.GetString(Resource.String.Dettaglio_ordine) + ":\n";
 
-            FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = "Dettaglio ordine:\n";
-            
-
-            ordini= objOrdini.DettOrdine(id_sess, data_ord, num_ord);
-            ordini.Insert(0, new Tuple<string, string, string, string>("Codice", "Descrizione", "Qta", "Imp"));
-
-            ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
-            listView.Adapter = new ActivityListItem_Adapter(this, ordini);
+            ThreadPool.QueueUserWorkItem(o => DettaglioOrdine());
 
             menuToolbar.creaToolbar(this, id_sess);
+        }
+
+        private void DettaglioOrdine()
+        {           
+            RunOnUiThread(() =>
+            {
+                dialog = new ProgressDialog(this);
+                dialog.SetMessage(Resources.GetString(Resource.String.Aggiornamento_in_corso));
+                dialog.SetCancelable(false);
+                dialog.Show();
+            });
+
+            OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+            ordini = objOrdini.DettOrdine(id_sess, data_ord, num_ord);
+            ordini.Insert(0, new Tuple<string, string, string, string>(Resources.GetString(Resource.String.Codice), Resources.GetString(Resource.String.Descrizione), Resources.GetString(Resource.String.Qta), Resources.GetString(Resource.String.Importo)));
+
+            RunOnUiThread(() =>
+            {
+                ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
+                listView.Adapter = new ActivityListItem_Adapter(this, ordini);
+
+                dialog.Dismiss();
+            });
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -92,11 +110,9 @@ namespace b2bApp
             }
         }
 
-        protected override void OnSaveInstanceState(Bundle outState)
-        {
-            outState.PutString("id_sess", id_sess);
-
-            base.OnSaveInstanceState(outState);
-        }
+        //protected override void OnSaveInstanceState(Bundle outState)
+        //{
+            
+        //}
     }
 }

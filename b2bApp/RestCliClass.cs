@@ -66,34 +66,7 @@ namespace b2bApp
 
             return arrCat;
         }
-/*
-        public bool ArtAll(String id_sess)
-        {
-            try
-            {
-                client.DownloadStringAsync(new Uri(url + "?op=articoli/all&session_id=" + id_sess));
-                client.DownloadStringCompleted += (object sender3, DownloadStringCompletedEventArgs e3) =>
-                {
-                    String reply_cat = e3.Result;
 
-                    JSONObject jsobj2 = new JSONObject(reply_cat);
-                    string cod2 = jsobj2.GetString("codice");
-                    if (cod2 == "0")
-                    {
-                        JSONArray artArray = jsobj2.GetJSONArray("articoli");
-                        ArticoliClass objArt = new ArticoliClass(cacheDir);
-                        objArt.ScriviArticoli(artArray);
-                    }
-                };
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
-        }
-*/
         public JsonArray ArtCat(String id_sess, String cat_padre)
         {
             JsonArray artArray = new JsonArray();

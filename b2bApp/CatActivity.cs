@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Android.Views.InputMethods;
-using System.Threading.Tasks;
+
+using System.Threading;
 
 namespace b2bApp
 {
@@ -21,6 +20,7 @@ namespace b2bApp
         List<Tuple<string, string, string, int>> items_all = new List<Tuple<string, string, string, int>>();
         String path = "";
         GestToolbar menuToolbar = new GestToolbar();
+        ProgressDialog dialog;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -37,11 +37,7 @@ namespace b2bApp
                 ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
                 listView.ItemClick += OnListItemClick;  // to be defined
 
-                ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-
-                // Categorie
-                cats = objArt.ElencoCategorie(cat_padre);
-                CercaArticoli(cat_padre);
+                ThreadPool.QueueUserWorkItem(o => CategorieArticoli(cat_padre));
             }
             else
             {
@@ -71,7 +67,7 @@ namespace b2bApp
                     Intent intent = new Intent(this, typeof(CatActivity));
                     intent.PutExtra("id_sess", id_sess);
                     intent.PutExtra("cat_padre", "0");
-                    intent.PutExtra("path", "Categorie articoli");
+                    intent.PutExtra("path", Resources.GetString(Resource.String.Categorie_articoli));
                     StartActivity(intent);
 
                     btNaviga.Enabled = true;
@@ -84,22 +80,23 @@ namespace b2bApp
             menuToolbar.creaToolbar(this, id_sess);
         }
 
-        public async Task<int> CercaArticoli(String cat_padre)
+        private void CategorieArticoli(String cat_padre)
         {
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.SetMessage("Ricerca in corso...");
-            dialog.SetCancelable(false);
-            dialog.Show();
+            RunOnUiThread(() =>
+            {
+                dialog = new ProgressDialog(this);
+                dialog.SetMessage(Resources.GetString(Resource.String.Ricerca_in_corso));
+                dialog.SetCancelable(false);
+                dialog.Show();
+            });
+
 
             ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
-            ListView listView = FindViewById<ListView>(Resource.Id.List);            
-
-            var res = await Task.Run(() => {
-                items = objArt.ElencoArticoli(id_sess, cat_padre);
-                return true;
-            });
-      
-            for (int i=0; i<cats.Count;i++)
+            // Categorie
+            cats = objArt.ElencoCategorie(cat_padre);
+            // Articoli
+            items = objArt.ElencoArticoli(id_sess, cat_padre);
+            for (int i = 0; i < cats.Count; i++)
             {
                 items_all.Add(new Tuple<string, string, string, int>(cats[i].Item1, "", cats[i].Item2, cats[i].Item3));
             }
@@ -108,11 +105,13 @@ namespace b2bApp
                 items_all.Add(new Tuple<string, string, string, int>(items[i].Item1, items[i].Item2, items[i].Item3, items[i].Item4));
             }
 
+            RunOnUiThread(() =>
+            {
+                ListView listView = FindViewById<ListView>(Resource.Id.List);
+                listView.Adapter = new ActivityListItem_Adapter2(this, items_all);
 
-            listView.Adapter = new ActivityListItem_Adapter2(this, items_all);
-
-            dialog.Dismiss();
-            return 0;
+                dialog.Dismiss();
+            });
         }
 
         void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -135,24 +134,6 @@ namespace b2bApp
                 intent.PutExtra("idp", idp);
                 StartActivity(intent);
             }
-            //if (cats.Count > 0)
-            //{
-            //    String cat_padre = cats[e.Position].Item1;
-            //    Intent intent = new Intent(this, typeof(CatActivity));
-            //    intent.PutExtra("id_sess", id_sess);
-            //    intent.PutExtra("cat_padre", cat_padre);
-            //    path = cats[e.Position].Item2;
-            //    intent.PutExtra("path", path);
-            //    StartActivity(intent);
-            //}
-            //else
-            //{
-            //    String idp = items[e.Position].Item1;
-            //    Intent intent = new Intent(this, typeof(SchActivity));
-            //    intent.PutExtra("id_sess", id_sess);
-            //    intent.PutExtra("idp", idp);
-            //    StartActivity(intent);
-            //}
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -217,21 +198,6 @@ namespace b2bApp
                     view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
                 }
                 return view;
-
-
-                //string colonna = item.Item3;
-                //if ( item.Item2!="")
-                //{
-                //    colonna = item.Item2.PadRight(15) + colonna;
-                //}
-                //view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = colonna;
-                //view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
-
-                ////view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = item.Item2;
-                ////view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = item.Item3;
-                ////view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(item.Item4);
-
-                //return view;
             }
         }
 

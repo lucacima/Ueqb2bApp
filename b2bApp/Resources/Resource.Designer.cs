@@ -294,50 +294,59 @@ namespace b2bApp
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040019
-			public const int Accesso_in_corso = 2130968601;
+			// aapt resource value: 0x7f04001c
+			public const int Accesso_in_corso = 2130968604;
 			
-			// aapt resource value: 0x7f040011
-			public const int Aggiungi_al_carrello = 2130968593;
+			// aapt resource value: 0x7f040019
+			public const int Aggiornamento_in_corso = 2130968601;
+			
+			// aapt resource value: 0x7f040012
+			public const int Aggiungi_al_carrello = 2130968594;
 			
 			// aapt resource value: 0x7f040000
 			public const int ApplicationName = 2130968576;
 			
-			// aapt resource value: 0x7f040015
-			public const int Carrello = 2130968597;
-			
-			// aapt resource value: 0x7f040014
-			public const int Cerca = 2130968596;
-			
-			// aapt resource value: 0x7f04000e
-			public const int Codice = 2130968590;
+			// aapt resource value: 0x7f040016
+			public const int Carrello = 2130968598;
 			
 			// aapt resource value: 0x7f04000a
-			public const int Data = 2130968586;
+			public const int Categorie_articoli = 2130968586;
 			
-			// aapt resource value: 0x7f040010
-			public const int Descrizione = 2130968592;
+			// aapt resource value: 0x7f040015
+			public const int Cerca = 2130968597;
 			
-			// aapt resource value: 0x7f040012
-			public const int Elimina_dal_carrello = 2130968594;
+			// aapt resource value: 0x7f04000f
+			public const int Codice = 2130968591;
+			
+			// aapt resource value: 0x7f04000b
+			public const int Data = 2130968587;
+			
+			// aapt resource value: 0x7f040011
+			public const int Descrizione = 2130968593;
+			
+			// aapt resource value: 0x7f04001b
+			public const int Dettaglio_ordine = 2130968603;
+			
+			// aapt resource value: 0x7f040013
+			public const int Elimina_dal_carrello = 2130968595;
 			
 			// aapt resource value: 0x7f040004
 			public const int Entra = 2130968580;
 			
-			// aapt resource value: 0x7f04001d
-			public const int ErrLogin1 = 2130968605;
+			// aapt resource value: 0x7f040020
+			public const int ErrLogin1 = 2130968608;
 			
-			// aapt resource value: 0x7f04001e
-			public const int ErrLogin2 = 2130968606;
+			// aapt resource value: 0x7f040021
+			public const int ErrLogin2 = 2130968609;
+			
+			// aapt resource value: 0x7f040022
+			public const int ErrQta = 2130968610;
 			
 			// aapt resource value: 0x7f04001f
-			public const int ErrQta = 2130968607;
+			public const int Esci = 2130968607;
 			
-			// aapt resource value: 0x7f04001c
-			public const int Esci = 2130968604;
-			
-			// aapt resource value: 0x7f04000d
-			public const int Importo = 2130968589;
+			// aapt resource value: 0x7f04000e
+			public const int Importo = 2130968590;
 			
 			// aapt resource value: 0x7f040007
 			public const int Invia_ordine = 2130968583;
@@ -348,35 +357,35 @@ namespace b2bApp
 			// aapt resource value: 0x7f040006
 			public const int Note = 2130968582;
 			
-			// aapt resource value: 0x7f04000b
-			public const int Num = 2130968587;
+			// aapt resource value: 0x7f04000c
+			public const int Num = 2130968588;
 			
-			// aapt resource value: 0x7f040016
-			public const int Ordine_creato = 2130968598;
+			// aapt resource value: 0x7f040017
+			public const int Ordine_creato = 2130968599;
 			
-			// aapt resource value: 0x7f040018
-			public const int Ordine_n = 2130968600;
+			// aapt resource value: 0x7f04001a
+			public const int Ordine_n = 2130968602;
 			
-			// aapt resource value: 0x7f040013
-			public const int Ordini = 2130968595;
+			// aapt resource value: 0x7f040014
+			public const int Ordini = 2130968596;
 			
 			// aapt resource value: 0x7f040003
 			public const int Password = 2130968579;
 			
-			// aapt resource value: 0x7f04000f
-			public const int Prezzo = 2130968591;
+			// aapt resource value: 0x7f040010
+			public const int Prezzo = 2130968592;
 			
-			// aapt resource value: 0x7f04000c
-			public const int Qta = 2130968588;
+			// aapt resource value: 0x7f04000d
+			public const int Qta = 2130968589;
 			
 			// aapt resource value: 0x7f040008
 			public const int Ricerca = 2130968584;
 			
-			// aapt resource value: 0x7f040017
-			public const int Ricerca_in_corso = 2130968599;
+			// aapt resource value: 0x7f040018
+			public const int Ricerca_in_corso = 2130968600;
 			
-			// aapt resource value: 0x7f04001b
-			public const int Risultato_ricerca = 2130968603;
+			// aapt resource value: 0x7f04001e
+			public const int Risultato_ricerca = 2130968606;
 			
 			// aapt resource value: 0x7f040001
 			public const int Titolo = 2130968577;
@@ -384,8 +393,8 @@ namespace b2bApp
 			// aapt resource value: 0x7f040005
 			public const int Totale = 2130968581;
 			
-			// aapt resource value: 0x7f04001a
-			public const int Ultimi_ordini = 2130968602;
+			// aapt resource value: 0x7f04001d
+			public const int Ultimi_ordini = 2130968605;
 			
 			// aapt resource value: 0x7f040002
 			public const int Utente = 2130968578;
