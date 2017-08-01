@@ -4,6 +4,7 @@ using Android.Widget;
 using Android.OS;
 using Android.Content;
 using System.Threading;
+using Android.Views;
 
 namespace b2bApp
 {
@@ -16,6 +17,8 @@ namespace b2bApp
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            Window.SetSoftInputMode(SoftInput.AdjustPan);
 
             // Set our view from the "main" layout resource
             SetContentView (Resource.Layout.Main);

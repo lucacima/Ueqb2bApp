@@ -7,8 +7,6 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Android.Views.InputMethods;
-using System.Threading.Tasks;
 using System.Threading;
 
 namespace b2bApp

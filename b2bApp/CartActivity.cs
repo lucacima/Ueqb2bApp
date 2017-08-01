@@ -21,6 +21,8 @@ namespace b2bApp
         {
             base.OnCreate(savedInstanceState);
 
+            Window.SetSoftInputMode(SoftInput.AdjustPan);
+
             SetContentView(Resource.Layout.carrello); // loads the HomeScreen.axml as this activity's view
             ListView listView = FindViewById<ListView>(Resource.Id.List); // get reference to the ListView in the layout
             listView.ItemClick += OnListItemClick;  // to be defined

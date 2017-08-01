@@ -32,6 +32,8 @@ namespace b2bApp
         {
             base.OnCreate(savedInstanceState);
 
+            Window.SetSoftInputMode(SoftInput.AdjustPan);
+
             id_sess = Intent.Extras.GetString("id_sess");
             idp = Intent.Extras.GetString("idp");
             riga_cart = Intent.Extras.GetInt("riga_cart");
