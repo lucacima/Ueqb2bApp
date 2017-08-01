@@ -490,7 +490,7 @@ function conford($user_id,$idord,$ind1='Umbria Equitazione',$ind2='Via Citernese
     mysql_free_result($result);
 
     if ( $user_id==0 ) {
-        $data['Email']= 'ordini@umbriaequitazione.com;info@umbriaequitazione.com;luca.cimarossa@gmail.com';
+        $data['Email']= 'ordini@umbriaequitazione.com, info@umbriaequitazione.com, luca.cimarossa@gmail.com';
     } else {
         $query = "SELECT Email FROM clienti WHERE Cod=$user_id";
         $result = mysql_query($query);
@@ -506,43 +506,42 @@ function conford($user_id,$idord,$ind1='Umbria Equitazione',$ind2='Via Citernese
 }
 
 function InviaEmail($ind_email,$oggetto,$mess_plain,$mess_html) {
+    // costruiamo alcune intestazioni generali
+     $header = "From: Umbria Equitazione <info@umbriaequitazione.com>\n";
+    //	 $header .= "CC: Altro Ricevente <altroricevente@dominio.net>\n";
+     $header .= "X-Mailer: Il nostro Php\n";
 
-	// costruiamo alcune intestazioni generali
-	 $header = "From: Umbria Equitazione <info@umbriaequitazione.com>\n";
-//	 $header .= "CC: Altro Ricevente <altroricevente@dominio.net>\n";
-	 $header .= "X-Mailer: Il nostro Php\n";
+    // generiamo la stringa che funge da separatore
+     $boundary = "==String_Boundary_x" .md5(time()). "x";
 
-	// generiamo la stringa che funge da separatore
-	 $boundary = "==String_Boundary_x" .md5(time()). "x";
+    // costruiamo le intestazioni che specificano
+     // un messaggio costituito da pi??rti alternative
+     $header .= "MIME-Version: 1.0\n";
+     $header .= "Content-Type: multipart/alternative;\n";
+     $header .= " boundary=\"$boundary\";\n\n";
 
-	// costruiamo le intestazioni che specificano
-	 // un messaggio costituito da più parti alternative
-	 $header .= "MIME-Version: 1.0\n";
-	 $header .= "Content-Type: multipart/alternative;\n";
-	 $header .= " boundary=\"$boundary\";\n\n";
+    // questa parte del messaggio viene visualizzata
+    // solo se il programma non sa interpretare
+    // i MIME poich? posta prima della stringa boundary
+     $messaggio = "Se visualizzi questo testo il tuo programma non supporta i MIME\n\n";
 
-	// questa parte del messaggio viene visualizzata
-	// solo se il programma non sa interpretare
-	// i MIME poiché è posta prima della stringa boundary
-	 $messaggio = "Se visualizzi questo testo il tuo programma non supporta i MIME\n\n";
+    // inizia la prima parte del messaggio in testo puro
+     $messaggio .= "--$boundary\n";
+     $messaggio .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
+     $messaggio .= "Content-Transfer-Encoding: 7bit\n\n";
+     $messaggio .= $mess_plain.".\n\n";
 
-	// inizia la prima parte del messaggio in testo puro
-	 $messaggio .= "--$boundary\n";
-	 $messaggio .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
-	 $messaggio .= "Content-Transfer-Encoding: 7bit\n\n";
-	 $messaggio .= $mess_plain.".\n\n";
+    // inizia la seconda parte del messaggio in formato html
+     $messaggio .= "--$boundary\n";
+     $messaggio .= "Content-Type: text/html; charset=\"iso-8859-1\"\n";
+     $messaggio .= "Content-Transfer-Encoding: 7bit\n\n";
+     $messaggio .= "<html><body>".$mess_html."</body></html>\n";
 
-	// inizia la seconda parte del messaggio in formato html
-	 $messaggio .= "--$boundary\n";
-	 $messaggio .= "Content-Type: text/html; charset=\"iso-8859-1\"\n";
-	 $messaggio .= "Content-Transfer-Encoding: 7bit\n\n";
-	 $messaggio .= "<html><body>".$mess_html."</body></html>\n";
+    // chiusura del messaggio con la stringa boundary
+     $messaggio .= "--$boundary--\n";
 
-	// chiusura del messaggio con la stringa boundary
-	 $messaggio .= "--$boundary--\n";
-
-	 $subject = $oggetto;
-
+     $subject = $oggetto;
+          
 	if( !@mail($ind_email, $subject, $messaggio, $header) ) {
 		echo "errore nell'invio dell'e-mail!";
 		return false;
@@ -583,10 +582,10 @@ function dettord($user_id,$datadoc,$numdoc) {
 	return $eleord;
 }
 
-function elencofoto() {
+function elencofoto($cartella) {
     $elefoto = array();
     
-    chdir("../fotoprod");
+    chdir($cartella);
     foreach (glob("*.jpg") as $filename) {
         $elem= array('filename' => $filename, 'size' => filesize($filename));
         array_push($elefoto,$elem);

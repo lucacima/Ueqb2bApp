@@ -11,9 +11,9 @@ if ( isset($_GET['lingua']) ) $lingua = $_GET['lingua'];
 
 // Parametri MySQL
 $hostname = "localhost";
-$username = "si2bxkky_luca";
-$password = "umbriaeq_2017";
-$dbName   = "si2bxkky_umbriaeq";
+$username = "vv2dazuk_dbuser";
+$password = "umbriaeq2017_";
+$dbName   = "vv2dazuk_umbriaeq";
 
 //Classe b2blib
 $b2bl = new b2blib($hostname, $username, $password,$dbName,$lingua);
@@ -34,7 +34,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
         
         $query = "SELECT ordini.NumOrd,ordini.Anno,ordini.Data,ordini.CodCli,ordini.CodDest,ordini.Note,ordini.note2,righeordini.CodArt,SUM(righeordini.Qta) as QtaT,righeordini.PzLordo,righeordini.Sconto1 ";
         $query.= "FROM ordini INNER JOIN righeordini ON ( ordini.NumOrd=righeordini.IdOrd AND ordini.Anno=righeordini.Anno) ";
-        $query.= "WHERE ordini.Stato='N' GROUP BY ordini.NumOrd,ordini.Anno,ordini.Data,ordini.CodCli,ordini.CodDest,ordini.Note,ordini.note2,righeordini.CodArt,righeordini.PzLordo,righeordini.Sconto1";
+        $query.= "GROUP BY ordini.NumOrd,ordini.Anno,ordini.Data,ordini.CodCli,ordini.CodDest,ordini.Note,ordini.note2,righeordini.CodArt,righeordini.PzLordo,righeordini.Sconto1";
+        //$query.= "WHERE ordini.Stato='N' GROUP BY ordini.NumOrd,ordini.Anno,ordini.Data,ordini.CodCli,ordini.CodDest,ordini.Note,ordini.note2,righeordini.CodArt,righeordini.PzLordo,righeordini.Sconto1";
         $result = mysql_query($query);
         $data=mysql_fetch_array($result);
         
@@ -57,7 +58,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
         //$returnObject = (object) array( 'codice' => '0', 'descrizione' => 'Ok', 'ordini' => $eleord );
     }
     if ( $op == "elencofoto" ) {    
-        $elenco_foto=$b2bl->elencofoto();
+        $cartella="../fotoprod";
+        if ( isset($_GET['cartella']) ) $cartella = $_GET['cartella']; 
+        $elenco_foto=$b2bl->elencofoto($cartella);
         $returnObject = (object) array( 'codice' => '0', 'descrizione' => 'Ok', 'elenco_foto' => $elenco_foto );            
     }        
     if ( $op == "conford" ) {    
@@ -65,7 +68,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if ( isset($_GET['ord']) ) $ord = $_GET['ord'];        
         $b2bl->conford(0,$ord);
         $returnObject = (object) array( 'codice' => '0', 'descrizione' => 'Ok');            
-    }                
+    }     
+    if ( $op == "importa" ) {           
+        $nome_file= $_GET['nome_file'];
+        $fh = fopen('../fotoprod/'.$nome_file,'r');
+        while ($line = fgets($fh)) {            
+            if ( strpos($line,"mysql_insert_id()") ) {
+                $idart=mysql_insert_id();
+                $line= str_replace("mysql_insert_id()", $idart, $line);
+            } 
+            $line= str_replace("<br>", "\n", $line);
+            mysql_query($line);
+        }
+        fclose($fh);     
+        unlink('../fotoprod/'.$nome_file);
+
+        $returnObject = (object) array( 'codice' => '0', 'descrizione' => 'Ok');
+    }
     break;    
     
   case 'PUT':       

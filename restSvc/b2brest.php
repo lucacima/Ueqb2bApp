@@ -11,9 +11,9 @@ if ( isset($_GET['lingua']) ) $lingua = $_GET['lingua'];
 
 // Parametri MySQL
 $hostname = "localhost";
-$username = "si2bxkky_luca";
-$password = "umbriaeq_2017";
-$dbName   = "si2bxkky_umbriaeq";
+$username = "vv2dazuk_dbuser";
+$password = "umbriaeq2017_";
+$dbName   = "vv2dazuk_umbriaeq";
 //Classe b2blib
 $b2bl = new b2blib($hostname, $username, $password,$dbName,$lingua);
 
@@ -110,7 +110,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
     break;
 }
 
-echo json_encode($returnObject);
+//print_r($returnObject);        
+
+echo json_encode($returnObject, JSON_PARTIAL_OUTPUT_ON_ERROR);
 
 
 /*
