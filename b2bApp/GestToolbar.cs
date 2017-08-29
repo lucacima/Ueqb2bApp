@@ -5,10 +5,9 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Content.Res;
 
 namespace b2bApp
 {
@@ -31,7 +30,7 @@ namespace b2bApp
                     Intent intent = new Intent(actv, typeof(CatActivity));
                     intent.PutExtra("id_sess", id_sess);
                     intent.PutExtra("cat_padre", "");
-                    intent.PutExtra("path", "Ricerca articoli");
+                    intent.PutExtra("path", "");
                     actv.StartActivity(intent);
                 }
                 if (e.Item.ItemId == Resource.Id.menu_cart)

@@ -64,14 +64,14 @@ namespace b2bApp
             EditText etNote = FindViewById<EditText>(Resource.Id.etNote);
             Button btAggiungi = FindViewById<Button>(Resource.Id.btAggCarrello);
             Button btElimina = FindViewById<Button>(Resource.Id.btEliCarrello);
-            clsCart objCart = new clsCart(Application.CacheDir.AbsolutePath, id_sess);
-
+            clsCart objCart = new clsCart(Application.CacheDir.AbsolutePath, id_sess);          
+            
             if ( riga_cart>0)
             {
                 JsonValue dati_cart = objCart.RigaCarrello(riga_cart);
                 etQta.Text = dati_cart["Qta"];
                 etNote.Text = dati_cart["Note"];
-                btAggiungi.Text = "Aggiorna";
+                btAggiungi.Text = Resources.GetString(Resource.String.Aggiorna);
                 btElimina.Visibility = ViewStates.Visible;
             }
 
@@ -102,16 +102,28 @@ namespace b2bApp
             btElimina.Click += (object sender, EventArgs e) =>
             {
                 btElimina.Enabled = false;
-                if (riga_cart > 0)
-                {
-                    objCart.EliminaCarrello(riga_cart);
-                }
-                Intent intent = new Intent(this, typeof(CartActivity));
-                intent.PutExtra("id_sess", id_sess);
-                StartActivity(intent);
 
-                this.Finish();
-                btElimina.Enabled = true;
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetMessage(Resources.GetString(Resource.String.ConfElimina));
+                alert.SetPositiveButton( (Resources.GetString(Resource.String.Si)) , (senderAlert, args) => {
+                    if (riga_cart > 0)
+                    {
+                        objCart.EliminaCarrello(riga_cart);
+                    }
+                    Intent intent = new Intent(this, typeof(CartActivity));
+                    intent.PutExtra("id_sess", id_sess);
+                    StartActivity(intent);
+
+                    this.Finish();
+                    btElimina.Enabled = true;
+                });
+                alert.SetNegativeButton((Resources.GetString(Resource.String.No)), (senderAlert, args) => {
+                    btElimina.Enabled = true;
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
+
+
             };
 
 

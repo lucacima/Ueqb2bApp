@@ -40,14 +40,25 @@ namespace b2bApp
             {
                 btOrdine.Enabled = false;
 
-                // Controlli                 
-                int id_ord = objCart.InviaOrdine(etNote.Text);
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetMessage(Resources.GetString(Resource.String.ConfInvio));
+                alert.SetPositiveButton((Resources.GetString(Resource.String.Si)), (senderAlert, args) => {
+                    // Controlli                 
+                    if ( etNote.Text.Length<93 )
+                    {
+                        etNote.Text += " Android";
+                    }
+                    int id_ord = objCart.InviaOrdine(etNote.Text);
+                    Toast.MakeText(this, Resources.GetString(Resource.String.Ordine_creato) +  ": " + id_ord.ToString() , Android.Widget.ToastLength.Short).Show();
 
-                Toast.MakeText(this, Resources.GetString(Resource.String.Ordine_creato) +  ": " + id_ord.ToString() , Android.Widget.ToastLength.Short).Show();
-                //Messaggio dopo
-                this.Finish();
-
-                btOrdine.Enabled = true;
+                    this.Finish();
+                    btOrdine.Enabled = true;
+                });
+                alert.SetNegativeButton((Resources.GetString(Resource.String.No)), (senderAlert, args) => {
+                    btOrdine.Enabled = true;
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
             };
 
             carts = objCart.ListaCarrello();

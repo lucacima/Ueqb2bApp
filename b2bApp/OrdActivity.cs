@@ -8,6 +8,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using System.Threading;
+using System.IO;
 
 namespace b2bApp
 {
@@ -22,6 +23,8 @@ namespace b2bApp
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            Window.SetSoftInputMode(SoftInput.AdjustPan);
 
             if (savedInstanceState != null)
             {
@@ -108,11 +111,13 @@ namespace b2bApp
                     dialog.Show();
                 });
 
-                clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
-                String ragSoc = objRestCli.InfoCli(id_sess);
-                RunOnUiThread(() => { FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = ragSoc + "\n"; });
+                
 
                 OrdiniClass objOrdini = new OrdiniClass(Application.CacheDir.AbsolutePath);
+
+                String ragSoc = objOrdini.RagSocCli(id_sess);
+                RunOnUiThread(() => { FindViewById<TextView>(Resource.Id.tvBenvenuto).Text = ragSoc + "\n"; });
+
                 ordini = objOrdini.ElencoOrdini(id_sess);
                 ordini.Insert(0, new Tuple<string, string, string, string>(Resources.GetString(Resource.String.Data), Resources.GetString(Resource.String.Num), Resources.GetString(Resource.String.Qta), Resources.GetString(Resource.String.Importo)));
 

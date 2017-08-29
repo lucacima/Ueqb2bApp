@@ -31,9 +31,14 @@
     <string name="Accesso_in_corso">Login...</string>
     <string name="Ultimi_ordini">Last orders</string>
     <string name="Risultato_ricerca">Search result</string>
-    <string name="Esci">Esci</string>
+    <string name="Esci">Logout</string>
     <string name="ErrLogin1">User or password not valid</string>
     <string name="ErrLogin2">Login error</string>
     <string name="ErrQta">Qty not inserted</string>
-
+    <string name="ConfElimina">Delete product?</string>
+    <string name="ConfInvio">Send order?</string>
+    <string name="Si">Yes</string>
+    <string name="No">No</string>
+    <string name="Aggiorna">Update</string>
+    <string name="Ricerca_articoli">Product search</string>
 </resources>

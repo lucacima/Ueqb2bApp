@@ -3,5 +3,6 @@
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="21" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	<application android:label="b2bApp" android:icon="@drawable/Icon" android:theme="@style/MyTheme"></application>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<application android:label="Umbria equitazione" android:icon="@drawable/Icon" android:theme="@style/MyTheme"></application>
 </manifest>

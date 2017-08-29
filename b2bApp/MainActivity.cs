@@ -57,7 +57,7 @@ namespace b2bApp
                 clsRestCli objRestCli = new clsRestCli(Application.CacheDir.AbsolutePath);
                 id_sess = objRestCli.Login(utente, password);
                 if (id_sess != "")
-                {
+                {                    
                     ArticoliClass objArt = new ArticoliClass(Application.CacheDir.AbsolutePath);
                     objArt.PrendiCategorie(id_sess);
                     objArt.EliminaCacheArticoli();

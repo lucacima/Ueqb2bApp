@@ -33,7 +33,8 @@
         android:text="@string/Note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvNote" />  
+        android:id="@+id/tvNote"
+        android:maxLength="100" />  
   
     <EditText
       android:layout_width="match_parent"

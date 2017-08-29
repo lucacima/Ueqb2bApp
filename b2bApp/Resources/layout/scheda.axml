@@ -61,6 +61,7 @@
           android:layout_height="wrap_content"
           android:id="@+id/etQta" 
           android:layout_gravity="left"
+          android:inputType="number"
       />      
       <TextView
           android:text="@string/Note"
@@ -73,7 +74,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:lines="3"
-          android:id="@+id/etNote" />
+          android:id="@+id/etNote" 
+          android:maxLength="100" />
       <Button
           android:text="@string/Aggiungi_al_carrello"
           android:layout_width="match_parent"

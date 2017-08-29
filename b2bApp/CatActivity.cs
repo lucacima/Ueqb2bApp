@@ -29,6 +29,10 @@ namespace b2bApp
             id_sess = Intent.Extras.GetString("id_sess");
             String cat_padre = Intent.Extras.GetString("cat_padre");
             path= Intent.Extras.GetString("path");
+            if ( path=="")
+            {
+                path= Resources.GetString(Resource.String.Ricerca_articoli);
+            }
 
             if ( cat_padre!="")
             {

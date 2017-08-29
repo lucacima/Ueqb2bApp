@@ -10,11 +10,13 @@ namespace b2bApp
     {
         String cacheDir = "";
         String filename = "";
+        String fileragsoc = "";
 
         public OrdiniClass(String cacheDir)
         {
             this.cacheDir = cacheDir;
             filename = System.IO.Path.Combine(cacheDir, "b2bAppCacheO.json");
+            fileragsoc = System.IO.Path.Combine(cacheDir, "b2bAppCacheR.json");
         }
 
         public bool EliminaCache()
@@ -23,6 +25,11 @@ namespace b2bApp
             {
                 File.Delete(filename);
             }
+            if (File.Exists(fileragsoc))
+            {
+                File.Delete(fileragsoc);
+            }
+
             return true;
 
         }
@@ -58,6 +65,31 @@ namespace b2bApp
             }
 
             return items;
+        }
+
+        public String RagSocCli(String id_sess)
+        {
+            String RagSoc = "";
+
+            try
+            {
+                if (File.Exists(fileragsoc))
+                {
+                    RagSoc = File.ReadAllText(fileragsoc);
+                }
+                else
+                {
+                    clsRestCli RestScli = new clsRestCli(cacheDir);
+                    RagSoc = RestScli.InfoCli(id_sess);
+                    File.WriteAllText(fileragsoc, RagSoc);
+                }
+            }
+            catch
+            {
+                ;
+            }
+
+            return RagSoc;
         }
 
         public List<Tuple<string, string, string, string>> DettOrdine(String id_sess, String datadoc, String numdoc)

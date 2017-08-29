@@ -297,6 +297,9 @@ namespace b2bApp
 			// aapt resource value: 0x7f04001c
 			public const int Accesso_in_corso = 2130968604;
 			
+			// aapt resource value: 0x7f040027
+			public const int Aggiorna = 2130968615;
+			
 			// aapt resource value: 0x7f040019
 			public const int Aggiornamento_in_corso = 2130968601;
 			
@@ -317,6 +320,12 @@ namespace b2bApp
 			
 			// aapt resource value: 0x7f04000f
 			public const int Codice = 2130968591;
+			
+			// aapt resource value: 0x7f040023
+			public const int ConfElimina = 2130968611;
+			
+			// aapt resource value: 0x7f040024
+			public const int ConfInvio = 2130968612;
 			
 			// aapt resource value: 0x7f04000b
 			public const int Data = 2130968587;
@@ -354,6 +363,9 @@ namespace b2bApp
 			// aapt resource value: 0x7f040009
 			public const int Naviga_categorie = 2130968585;
 			
+			// aapt resource value: 0x7f040026
+			public const int No = 2130968614;
+			
 			// aapt resource value: 0x7f040006
 			public const int Note = 2130968582;
 			
@@ -381,11 +393,17 @@ namespace b2bApp
 			// aapt resource value: 0x7f040008
 			public const int Ricerca = 2130968584;
 			
+			// aapt resource value: 0x7f040028
+			public const int Ricerca_articoli = 2130968616;
+			
 			// aapt resource value: 0x7f040018
 			public const int Ricerca_in_corso = 2130968600;
 			
 			// aapt resource value: 0x7f04001e
 			public const int Risultato_ricerca = 2130968606;
+			
+			// aapt resource value: 0x7f040025
+			public const int Si = 2130968613;
 			
 			// aapt resource value: 0x7f040001
 			public const int Titolo = 2130968577;
