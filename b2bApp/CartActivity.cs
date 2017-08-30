@@ -43,11 +43,6 @@ namespace b2bApp
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.SetMessage(Resources.GetString(Resource.String.ConfInvio));
                 alert.SetPositiveButton((Resources.GetString(Resource.String.Si)), (senderAlert, args) => {
-                    // Controlli                 
-                    if ( etNote.Text.Length<93 )
-                    {
-                        etNote.Text += " Android";
-                    }
                     int id_ord = objCart.InviaOrdine(etNote.Text);
                     Toast.MakeText(this, Resources.GetString(Resource.String.Ordine_creato) +  ": " + id_ord.ToString() , Android.Widget.ToastLength.Short).Show();
 

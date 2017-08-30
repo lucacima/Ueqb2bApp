@@ -490,12 +490,14 @@ function conford($user_id,$idord,$ind1='Umbria Equitazione',$ind2='Via Citernese
     mysql_free_result($result);
 
     if ( $user_id==0 ) {
-        $data['Email']= 'ordini@umbriaequitazione.com, info@umbriaequitazione.com, luca.cimarossa@gmail.com';
+        $data['Email']= 'ordini@umbriaequitazione.com, info@umbriaequitazione.com';
     } else {
         $query = "SELECT Email FROM clienti WHERE Cod=$user_id";
         $result = mysql_query($query);
         $data=mysql_fetch_array($result);
         mysql_free_result($result);
+        
+        $this->InviaEmail('luca.cimarossa@gmail.com',"Riepilogo ordine (mobile)",strip_tags($mess),$mess);
     }
     
 	if ( $data['Email']!='' ) {
